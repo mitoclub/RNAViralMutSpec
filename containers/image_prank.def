@@ -1,0 +1,32 @@
+Bootstrap: library
+From: debian:9
+
+%post
+    apt-get install --no-install-recommends --yes wget
+
+    cd /opt
+    wget http://wasabiapp.org/download/prank/prank.linux64.170427.tgz
+    tar -xvzf prank.linux64.170427.tgz
+    
+    chmod -R 755 /opt/prank
+
+%environment
+  export PATH=$PATH:/opt/prank/bin
+
+%test
+  test_command () {
+    if ! command -v "${1}"; then
+      echo "command ${1} not found!"
+      export FAILED_TESTS=1
+    fi
+  }
+
+  test_command bash
+  test_command prank
+
+  if [ -n "$FAILED_TESTS" ]; then
+    exit 1
+  fi
+
+%runscript
+  prank "$@"

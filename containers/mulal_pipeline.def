@@ -1,0 +1,69 @@
+BootStrap: library
+From: ubuntu:18.04
+
+%post
+  # Get the actual dependencies
+  apt-get update && apt-get upgrade -y
+  apt-get install --no-install-recommends --yes libncurses5 bzip2 wget python3 git
+
+  # Get the build dependencies
+  apt-get install --no-install-recommends --yes \
+      autoconf automake make gcc perl zlib1g-dev libbz2-dev \
+      liblzma-dev libcurl4-gnutls-dev libssl-dev libncurses5-dev
+
+  # Make versioning easier
+  SAMTOOLS_VERSION='1.13'
+  BWA_VERSION='0.7.17'
+
+  # Download the source tarball and build
+  cd /tmp || exit 1
+  wget --no-check-certificate https://github.com/samtools/samtools/releases/download/$SAMTOOLS_VERSION/samtools-$SAMTOOLS_VERSION.tar.bz2
+  tar xjvf samtools-$SAMTOOLS_VERSION.tar.bz2
+  cd samtools-$SAMTOOLS_VERSION || exit 1
+  ./configure
+  make && make install 
+  cd .. || exit 1
+  rm -rf samtools-$SAMTOOLS_VERSION*
+  cd || exit 1
+
+  # install bwa
+  # cd /tmp || exit 1
+  wget --no-check-certificate https://github.com/lh3/bwa/releases/download/v$BWA_VERSION/bwa-$BWA_VERSION.tar.bz2
+  tar xjvf bwa-$BWA_VERSION.tar.bz2
+  cd bwa-$BWA_VERSION || exit 1
+  make  
+  cd .. || exit 1
+  mv bwa-$BWA_VERSION /usr/share/
+  ln -s /usr/share/bwa-$BWA_VERSION/bwa /usr/bin/bwa
+  rm -rf bwa-$BWA_VERSION.tar.bz2
+  cd || exit 1
+
+  # Cleanup build packages
+  apt-get remove --yes  autoconf automake make gcc zlib1g-dev libbz2-dev \
+                        liblzma-dev libcurl4-gnutls-dev libssl-dev libncurses5-dev  && \
+          rm -rf /var/lib/apt/lists/*
+
+  #apk del --no-cache .build-deps
+
+%environment
+  export LC_ALL=C
+
+%test
+  test_command () {
+    if ! command -v "${1}"; then
+      echo "command ${1} not found!"
+      export FAILED_TESTS=1
+    fi
+  }
+
+  test_command bash
+  test_command ps
+  test_command samtools
+  test_command bwa
+
+  if [ -n "$FAILED_TESTS" ]; then
+    exit 1
+  fi
+
+%runscript
+  /bin/bash $@

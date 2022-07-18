@@ -1,0 +1,17 @@
+data/raw
+data/omicron
+data/processed
+data/pipe_output_gisaid
+data/mutation_dist*
+
+scripts/parser/access_file.txt
+scripts/parser/chromedriver
+*.sif
+env*
+*.ipynb_checkpoints
+sars_processing.egg-info
+*__pycache__
+
+.Rproj.user
+notebooks/vcftest
+!data/Simulation_Covid.csv
