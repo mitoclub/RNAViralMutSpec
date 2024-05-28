@@ -4,7 +4,7 @@ from ete3 import PhyloTree
 import tqdm
 from queue import Queue
 
-from src.utils import node_parent
+from utils import node_parent
 
 
 def read_tree(path: str, frmt=1) -> PhyloTree:

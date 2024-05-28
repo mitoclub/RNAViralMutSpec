@@ -11,7 +11,7 @@ import sys
 import click
 from ete3 import PhyloTree
 
-from src.utils import node_parent
+from utils import node_parent
 
 DEFAULT_TREE_FORMAT = 1
 MAX_TREE_LEN = 55_000
