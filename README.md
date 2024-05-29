@@ -12,3 +12,9 @@ Process sars-cov-2 full genome sequences and get mutations from builded phylogen
 - [Serratus](https://serratus.io/trees) database
 - [/refseq/release/viral](https://ftp.ncbi.nlm.nih.gov/refseq/release/viral/)
 - [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/) db
+
+### data of `Jesse D Bloom, Annabel C Beichman, Richard A Neher, Kelley Harris, Evolution of the SARS-CoV-2 Mutational Spectrum, Molecular Biology and Evolution, Volume 40, Issue 4, April 2023, msad085, https://doi.org/10.1093/molbev/msad085`
+
+- image of spectra https://jbloomlab.github.io/SARS2-mut-spectrum/rates-by-clade.html
+- spectra table https://github.com/jbloomlab/SARS2-mut-spectrum/blob/main/results/synonymous_mut_rates/rates_by_clade.csv
+- other viruses spectra https://github.com/jbloomlab/SARS2-mut-spectrum/blob/main/results/other_virus_spectra/other_virus_spectra.json
