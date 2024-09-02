@@ -9,7 +9,7 @@ import sys
 
 import tqdm
 
-from src.utils import read_fasta_generator
+from utils import read_fasta_generator
 
 MIN_SEQ_LEN = 29001
 PATH_TO_NAMES = "data/gisaid/allowable_names.txt"

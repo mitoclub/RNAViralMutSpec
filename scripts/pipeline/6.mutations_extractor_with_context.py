@@ -19,7 +19,7 @@ import click
 from ete3 import PhyloTree
 import pandas as pd
 
-from src.utils import node_parent, FastaStorage, release_mutations_from_two_seqs
+from utils import node_parent, FastaStorage, release_mutations_from_two_seqs
 
 
 # TODO use temporary mysql database instead of storage dict 

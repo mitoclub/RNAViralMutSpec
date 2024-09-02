@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from Bio import SeqIO
 import tqdm
 
-from src.utils import release_mutations_from_two_seqs
+from utils import release_mutations_from_two_seqs
 
 PATH_TO_DATA = '../data/omicron/'
 PATH_TO_MULAL = PATH_TO_DATA + 'mulal.filtered.fasta'

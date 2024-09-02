@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from Bio import SeqIO
 import tqdm
 
-from src.utils import release_mutations_from_two_seqs
+from utils import release_mutations_from_two_seqs
 
 
 PATH_TO_MULAL = "./data/omicron/mulal2wuhan.fasta.sample"
