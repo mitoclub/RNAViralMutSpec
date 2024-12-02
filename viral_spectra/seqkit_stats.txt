@@ -1,0 +1,27 @@
+file                       format  type  num_seqs    sum_len  min_len  avg_len  max_len
+fasta/10990.fa             FASTA   DNA        124    544,980    4,395    4,395    4,395
+fasta/11082.fa             FASTA   DNA        500  5,150,986   10,295   10,302   10,302
+fasta/57482.fa             FASTA   DNA        179  1,142,736    6,384    6,384    6,384
+fasta/693997.fa            FASTA   DNA        113    489,993    4,278  4,336.2    4,383
+fasta/12637.fa             FASTA   DNA        500  5,089,004    9,999   10,178   10,182
+fasta/138948.fa            FASTA   DNA        500  3,288,241    6,111  6,576.5    7,317
+fasta/138951.fa            FASTA   DNA        500  3,280,773    6,493  6,561.5    6,567
+fasta/186538.fa            FASTA   DNA        500  3,319,499    6,638    6,639    6,639
+fasta/28295.fa             FASTA   DNA        500  3,981,007    7,960    7,962    7,964
+
+fasta/694014.fa            FASTA   DNA        502  3,977,160      119  7,922.6    7,959
+fasta/1157337.fa           FASTA   DNA         96    360,614       50  3,756.4    4,048
+fasta/12110.fa             FASTA   DNA        929  3,555,226       53  3,826.9    7,000
+fasta/12162.fa             FASTA   DNA         67    597,651    2,025  8,920.2    9,399
+fasta/12814.fa             FASTA   DNA         50    195,467      300  3,909.3    6,498
+fasta/138950.fa            FASTA   DNA        501  3,311,746       65  6,610.3    6,624
+fasta/162145.fa            FASTA   DNA        502  3,007,883      907  5,991.8    6,018
+fasta/1678143.fa           FASTA   DNA        262  1,283,051    2,247  4,897.1    5,154
+fasta/1933178.fa           FASTA   DNA         68    452,595       21  6,655.8    6,756
+fasta/198112.fa            FASTA   DNA        231  1,889,088       45  8,177.9    8,682
+fasta/28344.fa             FASTA   DNA        970  3,615,029       26  3,726.8    7,536
+fasta/3052310(11620).fa    FASTA   DNA        207  1,240,636       96  5,993.4    6,675
+fasta/3052493(1980486).fa  FASTA   DNA        128    767,160       23  5,993.4    6,471
+fasta/351073.fa            FASTA   DNA        172    648,529       46  3,770.5    3,961
+fasta/38170.fa             FASTA   DNA        216    719,100       29  3,329.2    4,011
+fasta/38525.fa             FASTA   DNA         76    239,988       77  3,157.7    6,019

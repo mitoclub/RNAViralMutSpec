@@ -1,0 +1,39 @@
+taxid,species,host,gene,comment
+38170,Avian orthoreovirus__38170,,,
+1157337,Piscine orthoreovirus__1157337,,,
+351073,Mammalian orthoreovirus__351073,,,
+40054,Epizootic hemorrhagic disease virus__40054,,,
+10990,Rice black streaked dwarf virus__10990,Avena sativa ,P1 protein ,
+77763,Banna virus__77763,Odonata ,-,
+11320_1,Influenza A virus__11320,Homo sapiens ,"Segment 1, polymerase PB2 ",<3000bp
+11320_2,Influenza A virus__11320,Homo sapiens ,"Segment 2, polymerase PB1 ",<3000bp
+162145,Human metapneumovirus__162145,Homo sapiens ,large polymerase protein ,
+12814,Respiratory syncytial virus__12814,Homo sapiens ,polymerase subunit L ,
+186538,Zaire ebolavirus__186538,Homo sapiens ,polymerase ,
+1980486,Puumala orthohantavirus__1980486,Myodes glareolus ,polymerase ,Taxid:3052493
+11620,Lassa mammarenavirus__11620,Homo sapiens ,L protein ,Taxid:3052310
+31604,Small ruminant morbillivirus__31604,goat ,large polymerase ,cant blast
+1933309,Oropouche orthobunyavirus__1933309,Homo sapiens ,RNA polymerase ,Taxid: 118655
+1980917,Salmonid novirhabdovirus__1980917,,,no items in ncbi
+12331,Rice stripe tenuivirus__12331,Oryza sativa ,RNA-dependent RNA polymerase ,Taxid: 3052763
+38525,Avian metapneumovirus__38525,Tadorna(Jinding duck) ,RNA-dependent RNA polymerase ,
+1933178,Akabane orthobunyavirus__1933178,goat,RNA-dependent RNA polymerase ,
+57482,European bat 1 lyssavirus__57482,Eptesicus serotinus ,polymerase ,
+2034996,Tilapia tilapinevirus__2034996,,,<2000bp
+2560743,Schmallenberg orthobunyavirus__2560743,Ovis aries,M polyprotein,Taxid: 1133363
+11103,Hepacivirus C__11103,Homo sapiens ,polyprotein ,"cant blast, error"
+11983,Norwalk virus__11983,canine ,polyprotein ,
+12637,Dengue virus__12637,Homo sapiens ,polyprotein ,
+138948,Enterovirus A__138948,Homo sapiens ,polyprotein ,
+28344,Porcine reproductive and respiratory syndrome virus__28344,porcine ,polyprotein ,
+11082,West Nile virus__11082,Culex pipiens ,polyprotein ,
+694014,Avian coronavirus__694014,Gallus gallus ,polyprotein 1b,
+12110,Foot-and-mouth disease virus__12110,buffalo ,polyprotein ,
+138950,Enterovirus C__138950,Homo sapiens ,polyprotein ,
+1678143,Orthohepevirus A__1678143,Homo sapiens ,non-structural polyprotein ,
+28295,Porcine epidemic diarrhea virus__28295,porcine ,ORF1B ,
+12162,Citrus tristeza virus__12162,Citrus reticulata (mandarin) ,polyprotein ,
+138951,Enterovirus D__138951,Homo sapiens ,polyprotein ,
+693997,Alphacoronavirus 1__693997,canine ,spike protein,
+1985356,Pegivirus C__1985356,Homo sapiens ,polyprotein ,Taxid:54290
+198112,Deformed wing virus__198112,honeybee ,polyprotein ,
