@@ -1,3 +1,8 @@
 df_annot_flt_en.csv
-msa
+# msa
 flt
+trees/*.ckp.gz
+trees/*.bionj
+trees/*.log
+trees/*.mldist
+trees/*.model.gz
