@@ -1,0 +1,10 @@
+seqkit seq -m 6500 -w 80 'fasta/118655(1933309).fa' > 'flt/118655(1933309).fa'
+seqkit seq -m 9000 -w 80 'fasta/12162.fa' > 'flt/12162.fa'
+seqkit seq -m 5500 -w 80 'fasta/162145.fa' > 'flt/162145.fa'
+seqkit seq -m 5000 -w 80 'fasta/1678143.fa' > 'flt/1678143.fa'
+seqkit seq -m 6500 -w 80 'fasta/3052310(11620).fa' > 'flt/3052310(11620).fa'
+seqkit seq -m 6000 -w 80 'fasta/3052493(1980486).fa' > 'flt/3052493(1980486).fa'
+seqkit seq -m 3500 -w 80 'fasta/351073.fa' > 'flt/351073.fa'
+seqkit seq -m 8000 -w 80 'fasta/54290(1985356).fa' > 'flt/54290(1985356).fa'
+seqkit seq -m 7000 -w 80 'fasta/694014.fa' > 'flt/694014.fa'
+
