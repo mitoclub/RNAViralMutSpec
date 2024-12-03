@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# NEMU=/home/kpotoh/mutational_spectra_of_SSU/scripts/nemu-core.nf
-# CONFIG=/home/kpotoh/mutational_spectra_of_SSU/scripts/ssu.config
+NEMU=/home/kpotoh/SARS-CoV-2-MutSpec/viral_spectra/nemu.nf
+CONFIG=/home/kpotoh/SARS-CoV-2-MutSpec/viral_spectra/ssu.config
 
 PATH_TO_INPUT=./nemu_input
 PATH_TO_OUTPUT=./nemu_output
@@ -20,7 +20,7 @@ total_samples=$(grep -vf $done_file $inp_lst_file)
 
 for sample in $total_samples;
 do 
-    input_fasta_abs=$(realpath $PATH_TO_INPUT/$sample.fasta)
+    input_fasta_abs=$(realpath $PATH_TO_INPUT/$sample.fa)
     workdir=$PATH_TO_OUTPUT/$sample
 
     if [ -e $workdir ]; then 
@@ -36,7 +36,7 @@ do
 
     # -resume
     # -q -bg
-    nextflow -bg -q -c $CONFIG run $NEMU -with-trace --sequence $sample.fasta --outdir .
+    nextflow -bg -q -c $CONFIG run $NEMU -with-trace --sequence $sample.fa --outdir .
     cd - >/dev/null
     sleep 1
 
