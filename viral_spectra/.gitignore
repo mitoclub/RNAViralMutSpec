@@ -1,6 +1,8 @@
 df_annot_flt_en.csv
 # msa
 flt
+translations
+nemu
 trees/*.ckp.gz
 trees/*.bionj
 trees/*.log
