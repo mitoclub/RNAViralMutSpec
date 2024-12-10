@@ -15,3 +15,5 @@ sars_processing.egg-info
 .Rproj.user
 notebooks/vcftest
 !data/Simulation_Covid.csv
+
+viral_spectra\nemu_output
