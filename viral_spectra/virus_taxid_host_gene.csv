@@ -2,9 +2,9 @@ taxid,species,host,gene,comment
 38170,Avian orthoreovirus__38170,,,
 1157337,Piscine orthoreovirus__1157337,,,
 351073,Mammalian orthoreovirus__351073,,,
-40054,Epizootic hemorrhagic disease virus__40054,,,
+40054,Epizootic hemorrhagic disease virus__40054,Bos taurus,VP1 protein,
 10990,Rice black streaked dwarf virus__10990,Avena sativa ,P1 protein ,
-77763,Banna virus__77763,Odonata ,-,
+77763,Banna virus__77763,,RNA-dependent RNA Polymerase,
 11320_1,Influenza A virus__11320,Homo sapiens ,"Segment 1, polymerase PB2 ",<3000bp
 11320_2,Influenza A virus__11320,Homo sapiens ,"Segment 2, polymerase PB1 ",<3000bp
 162145,Human metapneumovirus__162145,Homo sapiens ,large polymerase protein ,
