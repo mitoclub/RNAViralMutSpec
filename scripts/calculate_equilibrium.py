@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from pymutspec.annotation import CodonAnnotation
 from pymutspec.constants import possible_codons
 
-coda = CodonAnnotation(2)
+coda = CodonAnnotation(1)
 alphabet = 'ACGT'
 
 
@@ -112,9 +112,9 @@ def main():
     eq_freqs.index.name = 'cdn'
     eq_freqs = eq_freqs.reset_index()
     eq_freqs['aa'] = eq_freqs['cdn'].map(coda.translate_codon)
-    eq_freqs['taxid'] = 0
+    # eq_freqs['taxid'] = 0
     print(eq_freqs)
-    # eq_freqs.to_csv('../data/equilibrium_freqs_20A.csv', index=False)
+    eq_freqs.to_csv('./data/equilibrium_freqs_20A.csv', index=False)
 
 
 if __name__ == "__main__":
