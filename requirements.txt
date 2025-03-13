@@ -1,5 +1,6 @@
 pymutspec==0.0.12
 scipy~=1.7.3
+scikit-learn
 statsmodels~=0.13.1
 networkx
 pingouin
