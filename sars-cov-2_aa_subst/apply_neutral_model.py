@@ -1,17 +1,7 @@
 from collections import Counter
 
 from Bio import SeqIO
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import seaborn.objects as so
-
-from pymutspec.draw import plot_mutspec12
-from pymutspec.annotation import CodonAnnotation
-from pymutspec.constants import possible_codons
-from pymutspec.io import read_genbank_ref
-
 import tqdm
 
 from utils import (
@@ -104,3 +94,10 @@ def main():
                 cur_metrics['sites_sample'] = label
                 cur_metrics['sample_cutoff'] = sample_cutoff*100
                 metrics_total.append(cur_metrics)
+
+    metrics_total_df = pd.DataFrame(metrics_total).set_index(['clade', 'sites_sample', 'sample_cutoff'])
+    metrics_total_df.to_csv('data/clades_fit_metrics.csv', float_format='%g')
+
+
+if __name__ == "__main__":
+    main()

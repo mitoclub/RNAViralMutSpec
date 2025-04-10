@@ -181,30 +181,33 @@ def calc_metrics(aa_subst: pd.DataFrame):
     y_true = aa_subst.nobs_scaled
     y_pred = aa_subst.nexp
 
-    # 2. Сравним наблюдаемые и ожидаемые каунты с помощью критерия χ²
-    # chi2_stat, chi2_p = chisquare(aa_subst.nobs, aa_subst.nexp)
-
-    # 2. Критерий Колмогорова-Смирнова
+    # 2. Kolmogorov-Smirnov test
     ks_stat, ks_p = ks_2samp(y_true, y_pred)
 
-    # 3. Логарифмическое правдоподобие (Log-Likelihood)
+    # 3. Log-Likelihood
     log_likelihood = np.sum(aa_subst.nobs_freqs * np.log(aa_subst.nexp_freqs) + \
                                 (1 - aa_subst.nobs_freqs) * np.log(1 - aa_subst.nexp_freqs))
 
-    # 4. Среднеквадратичная ошибка (MSE)
+    # 4. RMSE
     rmse = mean_squared_error(y_true, y_pred) ** 0.5
 
-    # 5. Корреляция Спирмена
+    # Spearman's rank correlation coefficient
     spearman_corr, spearman_p = spearmanr(y_true, y_pred)
+    pearson_corr, pearson_p = pearsonr(y_true, y_pred)
 
-    # 6. KL-дивергенция
+    # 6. KL-divergence
     kl_divergence = np.sum(kl_div(aa_subst.nobs_freqs, 
                                 aa_subst.nexp_freqs))
-
-    mut_count = np.sum(y_true)  # Общее число замещений
+    
+    # total number of ns mutations
+    mut_count = np.sum(y_true)
 
     acc = calc_accuracy(y_true, y_pred)
-    f1_macro, f1_weighted = calc_f1(y_true, y_pred)
+    try:
+        f1_macro, f1_weighted = calc_f1(y_true, y_pred)
+    except ZeroDivisionError:
+        print('Cannot calculate F1 score, division by zero')
+        f1_macro, f1_weighted = np.nan, np.nan
 
     metrics = {
         'ks_stat': ks_stat,
@@ -214,6 +217,8 @@ def calc_metrics(aa_subst: pd.DataFrame):
         'rmse_scaled': rmse / mut_count,
         'spearman_corr': spearman_corr,
         'spearman_p': spearman_p,
+        'pearson_corr': pearson_corr,
+        'pearson_p': pearson_p,
         'kl_divergence': kl_divergence,
         # 'bootstrap_p': bootstrap_p,
         'accuracy': acc,
