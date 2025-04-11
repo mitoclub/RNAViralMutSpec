@@ -1,13 +1,27 @@
+import os
 from collections import Counter
 
 from Bio import SeqIO
 import pandas as pd
 import tqdm
+from pymutspec.io import read_genbank_ref
+from pymutspec.annotation import CodonAnnotation
 
 from utils import (
     amino_acid_codes, prepare_aa_subst,
     calc_metrics, prepare_exp_aa_subst, 
 )
+
+debug = False
+if debug:
+    os.chdir('./sars-cov-2_aa_subst/')
+
+coda = CodonAnnotation(1)
+
+ref_sites_df = read_genbank_ref('data/NC_045512.2.gb')
+ref_sites_df = ref_sites_df[ref_sites_df.Codon.notna()]
+ref_sites_df['AA'] = ref_sites_df['Codon']\
+    .apply(coda.translate_codon).map(amino_acid_codes)
 
 
 def read_aa_counts_from_gb(path: str) -> dict:
@@ -26,6 +40,12 @@ def read_aa_counts_from_gb(path: str) -> dict:
 
     aa_counts_total_dct = aa_counts_df.rename(columns=amino_acid_codes).sum(0).to_dict()
     return aa_counts_total_dct
+
+
+def get_site_specific_aa_counts(sites):
+    aa_counts = ref_sites_df[ref_sites_df.Pos.isin(sites)]\
+        .query('AA != "*"').AA.value_counts().to_dict()
+    return aa_counts
 
 
 def main():
@@ -82,14 +102,18 @@ def main():
             obs_clade_least_variable_sites = obs_clade[obs_clade.nt_site.isin(bottom_rated_sites)]
             obs_clade_random_variable_sites = obs_clade[obs_clade.nt_site.isin(random_sites)]
 
-            for df_obs, label in zip([obs_clade_most_variable_sites, 
+            for df_obs, sites, label in zip([obs_clade_most_variable_sites, 
                                     obs_clade_least_variable_sites,
                                     obs_clade_random_variable_sites],
+                                    [top_rated_sites, 
+                                    bottom_rated_sites,
+                                    random_sites],
                                     ['most variable', 
                                     'least variable', 'random']):
                 
-                # TODO replace aa_freqs_total_dct by site sample specific aa freqs
-                aa_subst = prepare_aa_subst(df_obs, exp_aa_subst, aa_freqs_total_dct)
+                cur_aa_freqs_dct = get_site_specific_aa_counts(sites)
+                aa_subst = prepare_aa_subst(df_obs, exp_aa_subst, cur_aa_freqs_dct)
+                
                 cur_metrics = calc_metrics(aa_subst)
                 cur_metrics['clade'] = clade
                 cur_metrics['sites_sample'] = label
