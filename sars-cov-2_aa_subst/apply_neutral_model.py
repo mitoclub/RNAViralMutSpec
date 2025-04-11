@@ -61,7 +61,7 @@ def main():
         cur_metrics = calc_metrics(aa_subst)
         cur_metrics['clade'] = clade
         cur_metrics['sites_sample'] = 'total'
-        cur_metrics['sample_cutoff'] = 10
+        cur_metrics['sample_cutoff'] = 10  # num means nothing
         metrics_total.append(cur_metrics)
 
         site_rates = obs_clade.groupby('nt_site')['count'].sum()

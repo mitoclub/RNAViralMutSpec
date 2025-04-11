@@ -229,7 +229,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
     return metrics
 
 
-def plot_exp_heatmap(exp_aa_subst_matrix: pd.DataFrame, save_path: str, show=True):
+def plot_exp_heatmap(exp_aa_subst_matrix: pd.DataFrame, save_path: str, show=True, annot=False):
     """
     Plot expected amino acid substitution matrix.
     """
@@ -239,7 +239,7 @@ def plot_exp_heatmap(exp_aa_subst_matrix: pd.DataFrame, save_path: str, show=Tru
 
     fig, axs = plt.subplots(2, 3, figsize=(11, 10), 
                             width_ratios=[0.1, 1, .05], height_ratios=[1, 0.1])
-    sns.heatmap(exp_aa_subst_matrix, annot=False, fmt=".2f", 
+    sns.heatmap(exp_aa_subst_matrix, annot=annot, fmt=".2f", 
                 ax=axs[0, 1], cbar_ax=axs[0, 2], cmap='coolwarm', 
                 cbar_kws={'label': 'Substitution rate'}, 
                 mask=exp_aa_subst_matrix==0,
