@@ -88,6 +88,7 @@ def main():
                                     ['most variable', 
                                     'least variable', 'random']):
                 
+                # TODO replace aa_freqs_total_dct by site sample specific aa freqs
                 aa_subst = prepare_aa_subst(df_obs, exp_aa_subst, aa_freqs_total_dct)
                 cur_metrics = calc_metrics(aa_subst)
                 cur_metrics['clade'] = clade
