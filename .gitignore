@@ -12,6 +12,7 @@ env*
 sars_processing.egg-info
 *__pycache__
 
+.vscode
 .Rproj.user
 notebooks/vcftest
 !data/Simulation_Covid.csv
