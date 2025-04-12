@@ -3,14 +3,13 @@ from collections import Counter
 
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
-import matplotlib.pyplot as plt
 import pandas as pd
 import tqdm
 
 from utils import (
     amino_acid_codes, prepare_aa_subst,
     calc_metrics, prepare_exp_aa_subst, 
-    plot_obs_vs_exp,
+    prepare_rnd_exp_aa_subst, plot_obs_vs_exp,
 )
 
 debug = False
@@ -69,49 +68,55 @@ def main():
         columns={'RefAa': 'aa1', 'AltAa': 'aa2', 'ProbaFull': 'count'})
 
     metrics_total = []
-    i = 0
-    nrows, ncols = 5, 4
-    fig, axs = plt.subplots(nrows, ncols, figsize=(ncols*4, nrows*4-1.5))
     for (vir, group), obs_vir in tqdm.tqdm(
             viral_spectra.groupby(['virusname', 'Type']), 
             desc='Viruses'):
-        cur_spectrum = viral_spectra[viral_spectra['virusname'] == vir]
-        exp_aa_subst, _ = prepare_exp_aa_subst(cur_spectrum, 'Rate', 1)
+        
         # Select vir OBS substitutions
         obs_vir = obs[obs['virusname'] == vir].copy()
         obs_vir = obs_vir[(obs_vir.aa1 != '*') & (obs_vir.aa2 != '*')]
 
-        if obs_vir['count'].sum() < 500 or vir == 'SBV':
+        if obs_vir['count'].sum() < 500:
             continue
+        
+        # Get aa freqs for the current virus
+        cur_aa_freqs_dct = aa_freqs.loc[vir].to_dict()
 
         # for total sites set
-        cur_aa_freqs_dct = aa_freqs.loc[vir].to_dict()
+        # aa_subst = prepare_aa_subst(obs_vir, exp_aa_subst, cur_aa_freqs_dct)
+        # cur_metrics = calc_metrics(aa_subst)
+        # cur_metrics['Type'] = group
+        # cur_metrics['virusname'] = vir
+        # metrics_total.append(cur_metrics)
+
+
+        # neutral model
+        cur_spectrum = viral_spectra[viral_spectra['virusname'] == vir]
+        exp_aa_subst, _ = prepare_exp_aa_subst(cur_spectrum, 'Rate', 1)
         aa_subst = prepare_aa_subst(obs_vir, exp_aa_subst, cur_aa_freqs_dct)
         cur_metrics = calc_metrics(aa_subst)
+        cur_metrics['model'] = 'neutral'
         cur_metrics['Type'] = group
         cur_metrics['virusname'] = vir
+        cur_metrics['replica'] = 1
         metrics_total.append(cur_metrics)
 
-        ax = axs[i // ncols, i % ncols]
-        plot_obs_vs_exp(
-            aa_subst, ax=ax, show=False, 
-            text=f"{vir} ({group})", text_x=-2.2, text_y=-4.)
-        i += 1
-    
-    # # unshow empty plots
-    # axs[i // ncols, i % ncols].axis('off')
-    # for x in range(2):
-    #     i += 1
-    #     axs[i // ncols, i % ncols].axis('off')
-        
+        # random model
+        for i in range(1, 21):
+            exp_aa_subst_rnd, _ = prepare_rnd_exp_aa_subst(1)
+            aa_subst = prepare_aa_subst(obs_vir, exp_aa_subst_rnd, cur_aa_freqs_dct)
+            cur_metrics = calc_metrics(aa_subst)
+            cur_metrics['model'] = 'random'
+            cur_metrics['Type'] = group
+            cur_metrics['virusname'] = vir
+            cur_metrics['replica'] = i
+            metrics_total.append(cur_metrics)
 
-    plt.tight_layout()
-    plt.savefig('./figures/neutral_model_fit.pdf', dpi=300)
-    plt.close()
+
 
     metrics_total_df = pd.DataFrame(metrics_total)\
-        .set_index(['Type', 'virusname', ])
-    metrics_total_df.to_csv('data/virs_fit_metrics.csv', float_format='%g')
+        .set_index(['Type', 'virusname', 'model', 'replica'])
+    metrics_total_df.to_csv('data/virs_rnd_fit_metrics.csv', float_format='%g')
     print(metrics_total_df)
 
 

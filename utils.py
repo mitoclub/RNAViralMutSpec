@@ -124,6 +124,30 @@ def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_pat
     return exp_aa_subst, exp_aa_subst_matrix
 
 
+def prepare_rnd_exp_aa_subst(gc=1, save_path=None):
+    """Use random spectrum for aa substitutions matrix generation"""
+    rnd_spectrum = pd.DataFrame({
+        'Mut': [f'{n1}>{n2}' for n1 in alphabet for n2 in alphabet if n1 != n2],
+        'rate': uniform.rvs(size=12),
+    })
+
+    df_changes = collect_possible_changes(gc=gc)
+    spectrum_dict = rnd_spectrum.set_index('Mut')['rate'].to_dict()
+
+    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
+    df_changes['aa1'] = df_changes['aa1'].map(amino_acid_codes)
+    df_changes['aa2'] = df_changes['aa2'].map(amino_acid_codes)
+
+    ## Calculate expected AA substitutions matrix
+    exp_aa_subst = df_changes[(df_changes.aa1 != '*')&(df_changes.aa2 != '*')]\
+        .groupby(['aa1', 'aa2'])['rate'].sum().reset_index()
+    
+    if save_path:
+        exp_aa_subst.to_csv(save_path, float_format='%g', index=False)
+    exp_aa_subst_matrix = exp_aa_subst.pivot(index='aa1', columns='aa2', values='rate').fillna(0.)
+    return exp_aa_subst, exp_aa_subst_matrix
+
+
 def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_freqs: dict):
     aa_subst = obs_df.groupby(['aa1', 'aa2'])['count'].sum().rename('nobs').reset_index()
     aa_subst = aa_subst[(aa_subst['aa1'] != aa_subst['aa2']) & (aa_subst['aa1'] != '*') & (aa_subst['aa2'] != '*')]
@@ -177,6 +201,19 @@ def calc_f1(y_true, y_pred):
     return f1_macro, f1_weighted
 
 
+def calc_slope(y_true, y_pred):
+    """
+    Calculate slope of the regression line
+    """
+    slope, intercept = np.polyfit(y_true, y_pred, 1)
+
+    # slope2 = np.linalg.lstsq(
+    #     np.vstack([y_true, np.ones_like(y_true)]).T,
+    #     y_pred,
+    # )[0]
+    return slope, intercept
+
+
 def calc_metrics(aa_subst: pd.DataFrame):
     y_true = aa_subst.nobs_scaled
     y_pred = aa_subst.nexp
@@ -189,7 +226,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
                                 (1 - aa_subst.nobs_freqs) * np.log(1 - aa_subst.nexp_freqs))
 
     # 4. RMSE
-    rmse = mean_squared_error(y_true, y_pred) ** 0.5
+    rmse = mean_squared_error(aa_subst.nobs_freqs, aa_subst.nexp_freqs) ** 0.5
 
     # Spearman's rank correlation coefficient
     spearman_corr, spearman_p = spearmanr(y_true, y_pred)
@@ -209,18 +246,20 @@ def calc_metrics(aa_subst: pd.DataFrame):
         print('Cannot calculate F1 score, division by zero')
         f1_macro, f1_weighted = np.nan, np.nan
 
+    slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
+
     metrics = {
+        'slope': slope,
+        'intercept': intercept,
         'ks_stat': ks_stat,
         'ks_p': ks_p,
         'log_likelihood': log_likelihood,
         'rmse': rmse,
-        'rmse_scaled': rmse / mut_count,
         'spearman_corr': spearman_corr,
         'spearman_p': spearman_p,
         'pearson_corr': pearson_corr,
         'pearson_p': pearson_p,
         'kl_divergence': kl_divergence,
-        # 'bootstrap_p': bootstrap_p,
         'accuracy': acc,
         'f1_macro': f1_macro,
         'f1_weighted': f1_weighted,
@@ -334,18 +373,29 @@ def plot_aa_eq_freqs(exp_aa_subst_matrix, save_path: str, show=True, figsize=(12
         plt.close()
 
 
-def plot_obs_vs_exp(aa_subst, save_path, show=True):
+def plot_obs_vs_exp(
+        aa_subst, save_path=None, ax=None, show=True, 
+        text='', text_x=-2.2, text_y=-4.
+    ):
     from matplotlib.ticker import AutoMinorLocator, MultipleLocator, LogLocator
     aa_subst = aa_subst.copy()
     aa_subst['nobs_freqs_log'] = np.log10(aa_subst['nobs_freqs'])
     aa_subst['nexp_freqs_log'] = np.log10(aa_subst['nexp_freqs'])
 
-    cor_res = spearmanr(aa_subst['nobs_freqs'], aa_subst['nexp_freqs'])
+    rho, pval = spearmanr(aa_subst['nobs_freqs'], aa_subst['nexp_freqs'])
+    k, b = calc_slope(aa_subst['nobs_freqs'], aa_subst['nexp_freqs'])
 
-    plt.figure(figsize=(5, 5))
+    if ax is None:
+        plt.figure(figsize=(5, 5))
+        ax = plt.gca()
+
+    ax = sns.scatterplot(aa_subst, ax=ax,
+                x='nobs_freqs_log', y='nexp_freqs_log', 
+                color='blue', alpha=0.5)
     ax = sns.regplot(aa_subst[aa_subst['nobs_freqs']>0], 
-                color='blue', scatter_kws={'alpha':0.5},
-                x='nobs_freqs_log', y='nexp_freqs_log', label='20A',)
+                color='blue', scatter=False,
+                x='nobs_freqs_log', y='nexp_freqs_log', 
+                ax=ax, label=f'y={k:.2f}x+{b:.1g}')
 
     # ticks = np.log10(np.array([1e-4, 1e-3, 1e-2, 1e-1]))
     ticks = np.linspace(-4, -1, 4)
@@ -356,16 +406,14 @@ def plot_obs_vs_exp(aa_subst, save_path, show=True):
     ax.get_yaxis().set_major_formatter(formatter)
     # ax.get_xaxis().set_minor_locator(LogLocator(-10, 'auto'))
 
-    plt.text(-2, -4., 
-            f"Spearman: {cor_res.correlation:.2f}\np-value: {cor_res.pvalue:.2g}", 
+    ax.text(text_x, text_y, 
+            f"{text}\nSpearman: {rho:.2f}\np-value: {pval:.2g}", 
             fontsize=10)
-    plt.plot([-4, -1], [-4, -1], color='black', linestyle='--', label='y=x')
-    plt.xlabel('Observed AA frequencies')
-    plt.ylabel('Expected AA frequencies')
-    plt.legend()
-    plt.savefig(save_path)
-    plt.tight_layout()
+    ax.plot([-4, -1], [-4, -1], color='black', linestyle='--', label='y=x')
+    ax.set_xlabel('Observed AA frequencies')
+    ax.set_ylabel('Expected AA frequencies')
+    ax.legend()
+    if save_path:
+        plt.savefig(save_path)
     if show:
         plt.show()
-    else:
-        plt.close()
