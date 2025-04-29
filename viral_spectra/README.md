@@ -16,3 +16,4 @@ First we indentify the protein sequence of the target gene in the selected virus
 If NeMu fails to detect an appropriate outgroup for the chosen sequence, we provide a set of alighned sequenses obtained by tblastn. To indentify a suitable outgroup, we employ blastn with 'somewhat similar' parameter while excluded the virus of interest.
 ``` 
 
+cov_like = ['PEDV', 'alCoV1', 'ACoV ', 'CoV20A', 'CoV22C', 'HAV', 'RBSDV', 'DWV']
