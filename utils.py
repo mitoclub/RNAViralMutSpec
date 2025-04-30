@@ -390,11 +390,11 @@ def plot_obs_vs_exp(
         ax = plt.gca()
 
     ax = sns.scatterplot(aa_subst, ax=ax,
-                x='nobs_freqs_log', y='nexp_freqs_log', 
+                y='nobs_freqs_log', x='nexp_freqs_log', 
                 color='blue', alpha=0.5)
     ax = sns.regplot(aa_subst[aa_subst['nobs_freqs']>0], 
                 color='blue', scatter=False,
-                x='nobs_freqs_log', y='nexp_freqs_log', 
+                y='nobs_freqs_log', x='nexp_freqs_log', 
                 ax=ax, label=f'y={k:.2f}x+{b:.1g}')
 
     # ticks = np.log10(np.array([1e-4, 1e-3, 1e-2, 1e-1]))

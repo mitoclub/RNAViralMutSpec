@@ -1,0 +1,38 @@
+virusname,taxname,gainers,losers
+HBV,Hepatitis B virus,Pro.Leu.Thr.His,Arg.Val.Glu.Gly
+RBSDV,Rice black streaked dwarf virus,Ile.Leu.Phe.Tyr.Asn,Gly.Arg.Ala.Pro
+WNV,West Nile virus,Leu.Phe.Val.Ile.Tyr,Thr.Arg.Ala.Pro
+norw,Norwalk virus,Ile.Asn.Lys.Tyr.Thr.Leu,Val.Ala.Arg.Gly
+HAV,Hepatovirus A,Phe.Leu.Ile.Val.Tyr,Thr.Arg.Ala.Pro
+FMDV,Foot-and-mouth disease virus,Pro.Ala.Arg.Gly,Asn.Lys.Tyr.Leu.Phe.Ile
+CTV,Citrus tristeza virus,Val.Gly.Phe.Leu.Cys,Gln.His.Asn.Lys.Pro.Thr
+denv,Dengue virus,Lys.Thr.Asn.Ile.Gln.His.Tyr,Leu.Cys.Arg.Ala.Val.Gly
+PEDV,Porcine epidemic diarrhea virus,Leu.Phe.Ile.Val.Tyr.Cys,Thr.Gly.Ala.Arg.Pro
+PRRSV,Porcine reproductive and respiratory syndrome virus,Gly.Val.Ala.Cys.Leu.Phe.Arg,His.Gln.Ile.Asn.Thr.Lys
+aorv,Avian orthoreovirus,Leu.Val.Phe.Cys.Gly,Gln.Arg.His.Asn.Lys.Pro.Thr
+EHDV,Epizootic hemorrhagic disease virus,Ile.Leu.Phe.Tyr.Asn.Lys,Gly.Arg.Ala.Pro
+HGV,GB virus C,Gly.Ala.Arg.Pro.Val,Gln.Tyr.Thr.Asn.Lys.Ile
+EBLV1,European bat 1 lyssavirus,Ile.Leu.Phe.Tyr.Ser.Asn,Pro.Ala.Gly.Arg
+BAV,Banna virus,Ile.Phe.Leu.Tyr.Asn.Lys,Gly.Arg.Ala.Pro
+OROV,Oropouche orthobunyavirus,Ile.Lys.Asn.Tyr.Phe.Leu,Arg.Gly.Ala.Pro
+evA,Enterovirus A,Leu.Phe.Ile.Val.Tyr,Gly.Thr.Arg.Ala.Pro
+evC,Enterovirus C,Ile.Lys.Asn.Tyr.Gln.Thr.Glu,Val.Arg.Gly.Ala.Pro
+evD,Enterovirus D,Ile.Leu.Phe.Tyr.Asn.Lys,Arg.Pro.Ala.Gly
+HMV,Human metapneumovirus,Ile.Lys.Asn.Tyr.Phe.Leu.Gln,Arg.Pro.Ala.Gly
+DWV,Deformed wing virus,Phe.Leu.Val.Ile.Tyr,Thr.Arg.Ala.Pro
+MRV,Mammalian orthoreovirus,Val.Phe.Leu.Ile,His.Arg.Ala.Thr.Pro
+alCoV1,Alphacoronavirus 1,Ile.Leu.Phe.Tyr.Asn.Val,Thr.Gly.Ala.Arg.Pro
+ACoV ,Avian coronavirus,Leu.Phe.Ile.Tyr.Val,Thr.Gly.Ala.Arg.Pro
+SBV,Schmallenberg orthobunyavirus,Ile.Asn.Lys.Thr.Tyr,Val.Ala.Arg.Gly
+PRV,Piscine orthoreovirus,Ile.Asn.Thr.Lys.Tyr,Val.Ala.Arg.Gly
+HEV,Orthohepevirus A,Gly.Val.Leu.Ala.Phe.Cys.Ser.Arg,Glu.Tyr.His.Gln.Ile.Asn.Thr.Lys
+aka,Akabane orthobunyavirus,Ile.Lys.Asn.Tyr.Phe.Leu.Gln,Arg.Pro.Ala.Gly
+HCV,Hepacivirus hominis,Gly.Ala.Pro.Arg,Leu.Phe.Tyr.Asn.Lys.Ile
+PUUV,Puumala orthohantavirus,Ile.Lys.Tyr.Phe.Asn.Leu,Arg.Gly.Ala.Pro
+RSV,Rice stripe tenuivirus,Ile.Phe.Tyr.Leu.Asn.Lys,Gly.Arg.Ala.Pro
+flu_h1n1pdm,Influenza A H1N1,Ile.Lys.Asn.Thr.Tyr,Val.Pro.Arg.Ala.Gly
+flu_vic,Influenza B Victoria,Ile.Lys.Asn.Tyr.Thr,Val.Pro.Arg.Ala.Gly
+rsv-a,RSV-A,Ile.Lys.Asn.Tyr.Phe.Leu,Pro.Arg.Ala.Gly
+rsv-b,RSV-B,Ile.Lys.Asn.Tyr.Phe.Leu,Pro.Arg.Ala.Gly
+CoV20A,SARS-CoV-2 20A,Leu.Phe.Ile.Tyr.Val.Ser.Cys,Thr.Gly.Pro.Ala.Arg
+CoV22C,SARS-CoV-2 22C,Leu.Phe.Ile.Tyr.Val.Cys,Thr.Gly.Ala.Arg.Pro
