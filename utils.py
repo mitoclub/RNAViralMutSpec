@@ -9,6 +9,7 @@ from pymutspec.annotation import CodonAnnotation
 from pymutspec.constants import possible_codons
 
 alphabet = 'ACGT'
+transitions = ['A>G', 'C>T', 'G>A', 'T>C']
 amino_acid_codes = {
     "A": "Ala",
     "R": "Arg",
@@ -40,7 +41,7 @@ def collect_possible_changes(gc):
     i = 1
     data = []
     for cdn1 in possible_codons:
-        aa1 = coda.translate_codon(cdn1)
+        aa1 = amino_acid_codes[coda.translate_codon(cdn1)]
         for pic in range(3):
             nuc1 = cdn1[pic]
             for nuc2 in nucls:
@@ -49,13 +50,14 @@ def collect_possible_changes(gc):
                 cdn2 = list(cdn1)
                 cdn2[pic] = nuc2
                 cdn2 = ''.join(cdn2)
-                aa2 = coda.translate_codon(cdn2)
+                aa2 = amino_acid_codes[coda.translate_codon(cdn2)]
                 is_syn = aa1 == aa2
                 sbs = f'{nuc1}>{nuc2}'
                 data.append((pic, cdn1, cdn2, aa1, aa2, is_syn, sbs))
                 i += 1
 
-    df_changes = pd.DataFrame(data, columns=['pic', 'cdn1', 'cdn2', 'aa1', 'aa2', 'is_syn', 'sbs'])
+    df_changes = pd.DataFrame(
+        data, columns=['pic', 'cdn1', 'cdn2', 'aa1', 'aa2', 'is_syn', 'sbs'])
     return df_changes
 
 
@@ -106,13 +108,59 @@ def get_equilibrium_probabilities(M):
     return p/p.sum()
 
 
+def get_equilibrium_freqs(spectrum: pd.DataFrame, rate_col='MutSpec', gc=1):
+    coda = CodonAnnotation(gc)
+    df_changes = collect_possible_changes(gc)
+    spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
+
+    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
+    
+    cdn_sbs = df_changes.groupby(['cdn1', 'cdn2'])['rate'].sum()
+    M = cdn_spectrum_to_matrix(cdn_sbs)
+    eq_prob = get_equilibrium_probabilities(M).astype(float)
+
+    eq_freqs_cdn = pd.Series(dict(zip(possible_codons, eq_prob)))
+    eq_freqs_cdn.name = 'eq_freq'
+    eq_freqs_cdn.index.name = 'cdn'
+    eq_freqs_cdn = eq_freqs_cdn.reset_index()
+    eq_freqs_cdn['aa'] = eq_freqs_cdn['cdn']\
+        .map(coda.translate_codon).map(amino_acid_codes)
+    
+    eq_freqs_aa = eq_freqs_cdn[eq_freqs_cdn.aa !='*'].groupby('aa')['eq_freq'].sum()
+    eq_freqs_aa /= eq_freqs_aa.sum()
+    eq_freqs_aa = eq_freqs_aa.sort_values(ascending=False).reset_index()
+    
+    return eq_freqs_cdn, eq_freqs_aa
+
+
+def get_random_spectrum(tstv_ratio=None):
+    """For normal spectrum ts/tv must be between 2 and 20"""
+    rnd_spectrum = pd.DataFrame({
+        'Mut': [f'{n1}>{n2}' for n1 in alphabet for n2 in alphabet if n1 != n2],
+        'MutSpec': uniform.rvs(size=12),
+    })
+    if tstv_ratio is not None:
+        ts_frac = rnd_spectrum[rnd_spectrum['Mut'].isin(transitions)].MutSpec.sum()
+        tv_frac = rnd_spectrum[~rnd_spectrum['Mut'].isin(transitions)].MutSpec.sum()
+        multiplier = tstv_ratio / (ts_frac / tv_frac)
+        rnd_spectrum.loc[rnd_spectrum['Mut'].isin(transitions), 'MutSpec'] *= multiplier
+
+    rnd_spectrum['MutSpec'] = rnd_spectrum['MutSpec'] / rnd_spectrum['MutSpec'].sum()
+    return rnd_spectrum
+
+
+def get_equilibrium_freqs_rnd(gc=1, tstv_ratio=2.0):
+    """Use random spectrum for aa substitutions matrix generation"""
+    rnd_spectrum = get_random_spectrum(tstv_ratio=tstv_ratio)
+    res = get_equilibrium_freqs(rnd_spectrum, rate_col='MutSpec', gc=gc)
+    return rnd_spectrum, res
+
+
 def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None):
     df_changes = collect_possible_changes(gc=gc)
     spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
 
     df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
-    df_changes['aa1'] = df_changes['aa1'].map(amino_acid_codes)
-    df_changes['aa2'] = df_changes['aa2'].map(amino_acid_codes)
 
     ## Calculate expected AA substitutions matrix
     exp_aa_subst = df_changes[(df_changes.aa1 != '*')&(df_changes.aa2 != '*')]\
@@ -124,36 +172,23 @@ def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_pat
     return exp_aa_subst, exp_aa_subst_matrix
 
 
-def prepare_rnd_exp_aa_subst(gc=1, save_path=None):
+def prepare_rnd_exp_aa_subst(gc=1, tstv_ratio=None, save_path=None):
     """Use random spectrum for aa substitutions matrix generation"""
-    rnd_spectrum = pd.DataFrame({
-        'Mut': [f'{n1}>{n2}' for n1 in alphabet for n2 in alphabet if n1 != n2],
-        'rate': uniform.rvs(size=12),
-    })
-
-    df_changes = collect_possible_changes(gc=gc)
-    spectrum_dict = rnd_spectrum.set_index('Mut')['rate'].to_dict()
-
-    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
-    df_changes['aa1'] = df_changes['aa1'].map(amino_acid_codes)
-    df_changes['aa2'] = df_changes['aa2'].map(amino_acid_codes)
-
-    ## Calculate expected AA substitutions matrix
-    exp_aa_subst = df_changes[(df_changes.aa1 != '*')&(df_changes.aa2 != '*')]\
-        .groupby(['aa1', 'aa2'])['rate'].sum().reset_index()
-    
-    if save_path:
-        exp_aa_subst.to_csv(save_path, float_format='%g', index=False)
-    exp_aa_subst_matrix = exp_aa_subst.pivot(index='aa1', columns='aa2', values='rate').fillna(0.)
-    return exp_aa_subst, exp_aa_subst_matrix
+    rnd_spectrum = get_random_spectrum(tstv_ratio=tstv_ratio)
+    res = prepare_exp_aa_subst(
+        rnd_spectrum, rate_col='MutSpec', gc=gc, save_path=save_path)
+    return res
 
 
 def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_freqs: dict):
     aa_subst = obs_df.groupby(['aa1', 'aa2'])['count'].sum().rename('nobs').reset_index()
-    aa_subst = aa_subst[(aa_subst['aa1'] != aa_subst['aa2']) & (aa_subst['aa1'] != '*') & (aa_subst['aa2'] != '*')]
+    aa_subst = aa_subst[(aa_subst['aa1'] != aa_subst['aa2']) & 
+                        (aa_subst['aa1'] != '*') & 
+                        (aa_subst['aa2'] != '*')]
     aa_subst['aa1'] = aa_subst['aa1'].map(amino_acid_codes)
     aa_subst['aa2'] = aa_subst['aa2'].map(amino_acid_codes)
-    aa_subst['ref_aa1_freq'] = aa_subst['aa1'].map(ref_aa_freqs) / sum(ref_aa_freqs.values())
+    ref_aa_total_cnt = sum([x for x in ref_aa_freqs.values() if x > 0])
+    aa_subst['ref_aa1_freq'] = aa_subst['aa1'].map(ref_aa_freqs) / ref_aa_total_cnt
     aa_subst['nobs_scaled'] = aa_subst['nobs'] / aa_subst['ref_aa1_freq']
     aa_subst['nobs_scaled'] = aa_subst['nobs_scaled'] / aa_subst['nobs_scaled'].sum() * aa_subst['nobs'].sum()
     aa_subst = aa_subst.merge(exp_aa_subst.rename(columns={'rate': 'rate_exp'}), 'right').fillna(0)
@@ -205,7 +240,10 @@ def calc_slope(y_true, y_pred):
     """
     Calculate slope of the regression line
     """
-    slope, intercept = np.polyfit(y_true, y_pred, 1)
+    try:
+        slope, intercept = np.polyfit(y_true, y_pred, 1)
+    except:
+        slope, intercept = np.nan, np.nan
 
     # slope2 = np.linalg.lstsq(
     #     np.vstack([y_true, np.ones_like(y_true)]).T,
@@ -215,6 +253,7 @@ def calc_slope(y_true, y_pred):
 
 
 def calc_metrics(aa_subst: pd.DataFrame):
+    aa_subst = aa_subst.dropna()
     y_true = aa_subst.nobs_scaled
     y_pred = aa_subst.nexp
 
@@ -226,7 +265,10 @@ def calc_metrics(aa_subst: pd.DataFrame):
                                 (1 - aa_subst.nobs_freqs) * np.log(1 - aa_subst.nexp_freqs))
 
     # 4. RMSE
-    rmse = mean_squared_error(aa_subst.nobs_freqs, aa_subst.nexp_freqs) ** 0.5
+    try:
+        rmse = mean_squared_error(aa_subst.nobs_freqs, aa_subst.nexp_freqs) ** 0.5
+    except:
+        rmse = np.nan
 
     # Spearman's rank correlation coefficient
     spearman_corr, spearman_p = spearmanr(y_true, y_pred)
@@ -247,7 +289,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
         f1_macro, f1_weighted = np.nan, np.nan
 
     slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
-
+    
     metrics = {
         'slope': slope,
         'intercept': intercept,
@@ -390,11 +432,11 @@ def plot_obs_vs_exp(
         ax = plt.gca()
 
     ax = sns.scatterplot(aa_subst, ax=ax,
-                y='nobs_freqs_log', x='nexp_freqs_log', 
+                x='nobs_freqs_log', y='nexp_freqs_log', 
                 color='blue', alpha=0.5)
     ax = sns.regplot(aa_subst[aa_subst['nobs_freqs']>0], 
                 color='blue', scatter=False,
-                y='nobs_freqs_log', x='nexp_freqs_log', 
+                x='nobs_freqs_log', y='nexp_freqs_log', 
                 ax=ax, label=f'y={k:.2f}x+{b:.1g}')
 
     # ticks = np.log10(np.array([1e-4, 1e-3, 1e-2, 1e-1]))
@@ -412,7 +454,7 @@ def plot_obs_vs_exp(
     ax.plot([-4, -1], [-4, -1], color='black', linestyle='--', label='y=x')
     ax.set_xlabel('Observed AA frequencies')
     ax.set_ylabel('Expected AA frequencies')
-    ax.legend()
+    ax.legend(loc='upper left', fontsize=10)
     if save_path:
         plt.savefig(save_path)
     if show:
