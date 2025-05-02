@@ -10,7 +10,7 @@ from utils import get_random_spectra, get_equilibrium_freqs
 from warnings import filterwarnings
 filterwarnings("ignore",)
 
-NSAMPLES = 1_000_000
+NSAMPLES = 100_000
 THREADS = 64
 
 def process_random_ms(rnd_sp):
