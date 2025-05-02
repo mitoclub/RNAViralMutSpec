@@ -1,3 +1,4 @@
+from typing import Iterable
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -10,6 +11,7 @@ from pymutspec.constants import possible_codons
 
 alphabet = 'ACGT'
 transitions = ['A>G', 'C>T', 'G>A', 'T>C']
+transversions = ['A>C', 'A>T', 'C>A', 'C>G', 'G>C', 'G>T', 'T>A', 'T>G']
 amino_acid_codes = {
     "A": "Ala",
     "R": "Arg",
@@ -131,6 +133,33 @@ def get_equilibrium_freqs(spectrum: pd.DataFrame, rate_col='MutSpec', gc=1):
     eq_freqs_aa = eq_freqs_aa.sort_values(ascending=False).reset_index()
     
     return eq_freqs_cdn, eq_freqs_aa
+
+
+def get_random_spectra(n=10, tstv_sampling='poisson'):
+    """For normal spectrum ts/tv must be between 2 and 10
+    - param tstv_sampling: 'poisson', 'random'
+    """
+    columns = [f'{n1}>{n2}' for n1 in alphabet for n2 in alphabet if n1 != n2]
+    data = uniform.rvs(size=(n, 12))
+    rnd_spectra = pd.DataFrame(data, columns=columns)
+    sampled_tstv_ratios = (rnd_spectra[transitions].sum(axis=1) / \
+                          rnd_spectra[transversions].sum(axis=1)).values
+    
+    if tstv_sampling == 'poisson':
+        tstv_ratios = np.random.poisson(3.5, n) + np.random.random(n)
+        multiplier = tstv_ratios / sampled_tstv_ratios
+        rnd_spectra[transitions] *= multiplier[:, None]
+    elif tstv_sampling == 'random':
+        tstv_ratios = sampled_tstv_ratios
+    else:
+        raise ValueError(f"Unknown tstv_sampling: {tstv_sampling}")
+
+    rnd_spectra = (rnd_spectra.T / rnd_spectra.sum(axis=1)).T
+    rnd_spectra['tstv_ratio'] = tstv_ratios
+    rnd_spectra.reset_index(names='replica', inplace=True)
+    rnd_spectra_long = rnd_spectra.melt(
+        ['replica', 'tstv_ratio'], var_name='Mut', value_name='MutSpec')
+    return rnd_spectra_long
 
 
 def get_random_spectrum(tstv_ratio=None):
