@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import chisquare, ks_2samp, pearsonr, spearmanr, uniform
 from scipy.special import kl_div
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from pymutspec.annotation import CodonAnnotation
 from pymutspec.constants import possible_codons
 
