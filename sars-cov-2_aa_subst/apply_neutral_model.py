@@ -12,9 +12,9 @@ from utils import (
     calc_metrics, prepare_exp_aa_subst, 
 )
 
-debug = False
-if debug:
-    os.chdir('./sars-cov-2_aa_subst/')
+wd = 'sars-cov-2_aa_subst'
+if not os.getcwd().endswith(wd):
+    os.chdir(wd)
 
 coda = CodonAnnotation(1)
 

@@ -12,7 +12,7 @@ from utils import (
     prepare_rnd_exp_aa_subst, plot_obs_vs_exp,
 )
 
-debug = False
+debug = True
 
 if debug:
     os.chdir('./viral_spectra')

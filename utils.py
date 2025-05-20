@@ -1,10 +1,8 @@
-from typing import Iterable
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import chisquare, ks_2samp, pearsonr, spearmanr, uniform
-from scipy.special import kl_div
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from pymutspec.annotation import CodonAnnotation
 from pymutspec.constants import possible_codons
@@ -230,7 +228,10 @@ def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_fr
 
 
 def calc_accuracy(y_true, y_pred):
-    '''Acc = Sum(TP1, TP2, …, TPn)/total_obs_cnt'''
+    '''
+    LEGACY
+    
+    Acc = Sum(TP1, TP2, …, TPn)/total_obs_cnt'''
     TP = np.min([y_true, y_pred], axis=0)
     total_obs_cnt = y_true.sum()
     acc = TP.sum() / total_obs_cnt
@@ -238,7 +239,11 @@ def calc_accuracy(y_true, y_pred):
 
 
 def calc_f1(y_true, y_pred):
-    '''Acc = Sum(TP1, TP2, …, TPn)/total_obs_cnt'''
+    '''
+    LEGACY
+
+    Acc = Sum(TP1, TP2, …, TPn)/total_obs_cnt
+    '''
     f1_weighted = 0.
     f1_macro = 0.
     total = y_true.sum()
@@ -281,6 +286,10 @@ def calc_slope(y_true, y_pred):
     return slope, intercept
 
 
+def weighted_average_percentage_error(y_true, y_pred):
+    return mean_absolute_percentage_error(y_true, y_pred, sample_weight=y_true)
+
+
 def calc_metrics(aa_subst: pd.DataFrame):
     aa_subst = aa_subst.dropna()
     y_true = aa_subst.nobs_scaled
@@ -299,41 +308,32 @@ def calc_metrics(aa_subst: pd.DataFrame):
     except:
         rmse = np.nan
 
+    mask = y_true > 0
+    mape = mean_absolute_percentage_error(y_true[mask], y_pred[mask])
+    wape = weighted_average_percentage_error(y_true[mask], y_pred[mask])
+
     # Spearman's rank correlation coefficient
     spearman_corr, spearman_p = spearmanr(y_true, y_pred)
     pearson_corr, pearson_p = pearsonr(y_true, y_pred)
 
-    # 6. KL-divergence
-    kl_divergence = np.sum(kl_div(aa_subst.nobs_freqs, 
-                                aa_subst.nexp_freqs))
-    
     # total number of ns mutations
     mut_count = np.sum(y_true)
-
-    acc = calc_accuracy(y_true, y_pred)
-    try:
-        f1_macro, f1_weighted = calc_f1(y_true, y_pred)
-    except ZeroDivisionError:
-        print('Cannot calculate F1 score, division by zero')
-        f1_macro, f1_weighted = np.nan, np.nan
 
     slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
     
     metrics = {
+        'mape': mape,
+        'wape': wape,
         'slope': slope,
         'intercept': intercept,
-        'ks_stat': ks_stat,
-        'ks_p': ks_p,
-        'log_likelihood': log_likelihood,
-        'rmse': rmse,
         'spearman_corr': spearman_corr,
         'spearman_p': spearman_p,
         'pearson_corr': pearson_corr,
         'pearson_p': pearson_p,
-        'kl_divergence': kl_divergence,
-        'accuracy': acc,
-        'f1_macro': f1_macro,
-        'f1_weighted': f1_weighted,
+        'ks_stat': ks_stat,
+        'ks_p': ks_p,
+        'rmse': rmse,
+        'log_likelihood': log_likelihood,
         'mut_count': mut_count,
     }
     return metrics
@@ -350,7 +350,7 @@ def plot_exp_heatmap(exp_aa_subst_matrix: pd.DataFrame, save_path: str, show=Tru
     fig, axs = plt.subplots(2, 3, figsize=(11, 10), 
                             width_ratios=[0.1, 1, .05], height_ratios=[1, 0.1])
     sns.heatmap(exp_aa_subst_matrix, annot=annot, fmt=".2f", 
-                ax=axs[0, 1], cbar_ax=axs[0, 2], cmap='coolwarm', 
+                ax=axs[0, 1], cbar_ax=axs[0, 2], cmap="light:r", 
                 cbar_kws={'label': 'Substitution rate'}, 
                 mask=exp_aa_subst_matrix==0,
     )
