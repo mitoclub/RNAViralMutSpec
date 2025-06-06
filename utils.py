@@ -97,8 +97,8 @@ def cdn_spectrum_to_matrix(cdn_sbs):
     return M
 
 
-def get_equilibrium_probabilities(M):
-    evals, evecs = np.linalg.eig(M)
+def get_equilibrium_probabilities(Q):
+    evals, evecs = np.linalg.eig(Q)
     # find zero eigenvalue
     ii = np.argmin(np.abs(evals))
     assert np.abs(evals[ii])<1e-10
