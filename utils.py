@@ -35,7 +35,7 @@ amino_acid_codes = {
 }
 
 
-def collect_possible_changes(gc):
+def collect_possible_changes(gc, spectrum_dict=None):
     coda = CodonAnnotation(gc)
     nucls = alphabet
     i = 1
@@ -58,6 +58,10 @@ def collect_possible_changes(gc):
 
     df_changes = pd.DataFrame(
         data, columns=['pic', 'cdn1', 'cdn2', 'aa1', 'aa2', 'is_syn', 'sbs'])
+    
+    if spectrum_dict is not None:
+        df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)    
+
     return df_changes
 
 
@@ -78,45 +82,47 @@ def nuc_spectrum_to_matrix(spec):
     return M
 
 
-def cdn_spectrum_to_matrix(cdn_sbs):
-    '''
-    convert dictionary of mutation counts to mutation matrix
-    '''
-    n = len(possible_codons)
-    M = np.zeros((n, n))
-    for i1,cdn1 in enumerate(possible_codons):
-        for i2,cdn2 in enumerate(possible_codons):
-            if cdn1!=cdn2:
-                val = cdn_sbs[(cdn1, cdn2)] if (cdn1, cdn2) in cdn_sbs.index else 0.
-                M[i2,i1] = val
-    # normalize off-diagonal rates (just for standardization, doesn't affect the results)
-    M /= M.sum()
-    # will the diagonal with 'outflow' term to guarantee conservation of probability
-    d = M.sum(axis=0)
-    np.fill_diagonal(M,-d)
-    return M
+def cdn_spectrum_to_matrix(df_changes: pd.DataFrame):
+    cdn_sbs = df_changes.groupby(['cdn1', 'cdn2'])['rate'].sum().reset_index()
+    Pcdn = cdn_sbs.pivot(index='cdn1', columns='cdn2', values='rate').fillna(0.)
+    Pcdn = (Pcdn.T / Pcdn.sum(axis=1)).T
+    return Pcdn
 
 
-def get_equilibrium_probabilities(Q):
-    evals, evecs = np.linalg.eig(Q)
-    # find zero eigenvalue
-    ii = np.argmin(np.abs(evals))
-    assert np.abs(evals[ii])<1e-10
-    # pull out corresponding eigenvector, return normalized to sum_i p_i = 1
-    p = evecs[:,ii]
-    return p/p.sum()
+def get_equilibrium_probabilities(Pmatrix: np.ndarray):
+    Q = Pmatrix.copy()
+    Q = Q - np.diag(np.sum(Q, axis=1))
+
+    values, vectors = np.linalg.eig(Q.T)
+    pi = vectors[:, np.isclose(values, 0)].real.flatten()
+    pi = pi / pi.sum()
+    return pi
+
+
+def simulate_markov_continual(
+        transition_Pmatrix: np.ndarray, initial_vector: np.ndarray, 
+        num_iterations: int, delta_t=0.01):
+    pi = initial_vector.copy()
+    data = [pi.copy()]
+    Q = transition_Pmatrix.copy()
+    Q = Q - np.diag(np.sum(Q, axis=1))
+    for _ in range(num_iterations):
+        pi_new = pi + delta_t * (pi @ Q)
+        pi_new = pi_new / pi_new.sum()
+        data.append(pi_new.copy())
+        if np.linalg.norm(pi_new - pi) < 1e-8:
+            break
+        pi = pi_new
+    return data
 
 
 def get_equilibrium_freqs(spectrum: pd.DataFrame, rate_col='MutSpec', gc=1):
     coda = CodonAnnotation(gc)
-    df_changes = collect_possible_changes(gc)
     spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
-
-    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
+    df_changes = collect_possible_changes(gc, spectrum_dict)
     
-    cdn_sbs = df_changes.groupby(['cdn1', 'cdn2'])['rate'].sum()
-    M = cdn_spectrum_to_matrix(cdn_sbs)
-    eq_prob = get_equilibrium_probabilities(M).astype(float)
+    M = cdn_spectrum_to_matrix(df_changes)
+    eq_prob = get_equilibrium_probabilities(M.values)
 
     eq_freqs_cdn = pd.Series(dict(zip(possible_codons, eq_prob)))
     eq_freqs_cdn.name = 'eq_freq'
