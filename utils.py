@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import chisquare, ks_2samp, pearsonr, spearmanr, uniform
-from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error, r2_score
 from pymutspec.annotation import CodonAnnotation
 from pymutspec.constants import possible_codons
 
@@ -342,8 +342,11 @@ def calc_metrics(aa_subst: pd.DataFrame):
     mut_count = np.sum(y_true)
 
     slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
+
+    r2 = r2_score(y_true, y_pred)
     
     metrics = {
+        'r2': r2,
         'mape': mape,
         'wape': wape,
         'slope': slope,
