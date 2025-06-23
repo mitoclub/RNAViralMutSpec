@@ -3,6 +3,8 @@ from collections import Counter
 
 from Bio import SeqIO
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import tqdm
 from pymutspec.io import read_genbank_ref
 from pymutspec.annotation import CodonAnnotation
@@ -51,11 +53,10 @@ def get_site_specific_aa_counts(sites):
 def main():
     aa_freqs_total_dct = read_aa_counts_from_gb("data/NC_045512.2.gb")
 
-    clades_spectra = pd.read_csv('data/rates_by_clade.csv')
+    clades_spectra = pd.read_csv('data/bloom_etal/rates_by_clade.csv')
     clades_spectra['Mut'] = clades_spectra['mut_type'].str.replace('to', '>')
 
-    # https://media.githubusercontent.com/media/jbloomlab/SARS2-mut-spectrum/refs/heads/main/results/mutation_counts/aggregated.csv
-    obs = pd.read_csv('data/aggregated.csv')
+    obs = pd.read_csv('data/bloom_etal/aggregated.csv')
     obs = obs[(obs['subset'] == 'all') & (obs['synonymous'] == False) & (obs['exclude'] == False)]
 
     def _same_aa_mut(aa_mutation: str):
@@ -95,7 +96,20 @@ def main():
 
     metrics_total_df = pd.DataFrame(metrics_total)\
         .set_index(['model', 'clade', 'replica'])
-    metrics_total_df.to_csv('data/rnd_fit_metrics.csv', float_format='%g')
+    metrics_total_df.to_csv('data/fit_metrics_rnd.csv', float_format='%g')
+
+
+    plt.figure(figsize=(10, 7))
+    ax = sns.boxplot(data=metrics_total_df.reset_index(), 
+                    y='r2', x='model', hue='clade',
+                    palette='Set3',
+    )
+    ax.set_xlabel('Spectrum', fontsize=14)
+    ax.set_ylabel('$R^2$', fontsize=14)
+    plt.legend(title='Clade', bbox_to_anchor=(1.01, 1.02), loc='upper left')
+    plt.grid(axis='y')
+    plt.savefig('./figures/fit_metrics_rnd.pdf')
+    plt.close()
 
 
 if __name__ == "__main__":

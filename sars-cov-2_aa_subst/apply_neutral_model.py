@@ -3,6 +3,8 @@ from collections import Counter
 
 from Bio import SeqIO
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import tqdm
 from pymutspec.io import read_genbank_ref
 from pymutspec.annotation import CodonAnnotation
@@ -51,11 +53,11 @@ def get_site_specific_aa_counts(sites):
 def main():
     aa_freqs_total_dct = read_aa_counts_from_gb("data/NC_045512.2.gb")
 
-    clades_spectra = pd.read_csv('data/rates_by_clade.csv')
+    clades_spectra = pd.read_csv('data/bloom_etal/rates_by_clade.csv')
     clades_spectra['Mut'] = clades_spectra['mut_type'].str.replace('to', '>')
 
     # https://media.githubusercontent.com/media/jbloomlab/SARS2-mut-spectrum/refs/heads/main/results/mutation_counts/aggregated.csv
-    obs = pd.read_csv('data/aggregated.csv')
+    obs = pd.read_csv('data/bloom_etal/aggregated.csv')
     obs = obs[(obs['subset'] == 'all') & (obs['synonymous'] == False) & (obs['exclude'] == False)]
 
     def _same_aa_mut(aa_mutation: str):
@@ -121,7 +123,40 @@ def main():
                 metrics_total.append(cur_metrics)
 
     metrics_total_df = pd.DataFrame(metrics_total).set_index(['clade', 'sites_sample', 'sample_cutoff'])
-    metrics_total_df.to_csv('data/clades_fit_metrics.csv', float_format='%g')
+    metrics_total_df.to_csv('data/fit_metrics_sites.csv', float_format='%g')
+
+
+    _ = metrics_total_df[['spearman_corr','r2', 'wape', 'mut_count']]\
+        .melt(ignore_index=False, var_name='metric').reset_index()
+    g = sns.catplot(data=_, sharey=False, kind='box', col='metric', col_wrap=2,
+                    y='value', x='sites_sample', hue='sample_cutoff',  
+                    palette='Set2', height=3, aspect=1.25,
+    )
+    g.set_titles('{col_name}')
+    g.set_xticklabels(g.axes[2].get_xticklabels(), rotation=-45)
+    g.set_xlabels('Sites')
+    g.set_ylabels('Metric value')
+    g.axes_dict['mut_count'].set_yscale('log')
+    g.legend.set_title('Site sampling\ncutoff, %')
+    g.savefig('./figures/fit_metrics_sites.pdf')
+
+    _ = metrics_total_df[['r2']]\
+        .melt(ignore_index=False, var_name='metric').reset_index()
+    g = sns.catplot(data=_, sharey=False, kind='box', col='metric', col_wrap=1,
+                    y='value', x='sites_sample', hue='sample_cutoff',  
+                    palette='Set2', height=4, aspect=1.2,
+                    # col_order=['accuracy']
+    )
+    g.set_titles('')
+    g.set_xticklabels(g.axes[0].get_xticklabels(), rotation=-25)
+    g.set_xlabels('Sites')
+    g.set_ylabels('$R^2$')
+    g.legend.set_title('Site sampling\ncutoff, %')
+    plt.grid(axis='y')
+    g.savefig('./figures/fit_metrics_sites_r2.pdf')
+
+    print(metrics_total_df.reset_index().query('sites_sample == "total"')\
+        .set_index('clade')[['r2','slope', 'spearman_corr', 'mut_count']].round(2))
 
 
 if __name__ == "__main__":
