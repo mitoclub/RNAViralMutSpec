@@ -53,7 +53,7 @@ def get_site_specific_aa_counts(sites):
 def main():
     aa_freqs_total_dct = read_aa_counts_from_gb("data/NC_045512.2.gb")
 
-    clades_spectra = pd.read_csv('data/bloom_etal/rates_by_clade.csv')
+    clades_spectra = pd.read_csv('data/bloom_etal/rates_by_clade.csv').query('subset == "all"')
     clades_spectra['Mut'] = clades_spectra['mut_type'].str.replace('to', '>')
 
     obs = pd.read_csv('data/bloom_etal/aggregated.csv')
