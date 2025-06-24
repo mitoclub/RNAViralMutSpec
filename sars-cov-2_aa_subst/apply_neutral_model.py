@@ -83,6 +83,27 @@ def main():
         cur_metrics = calc_metrics(aa_subst)
         cur_metrics['clade'] = clade
         cur_metrics['sites_sample'] = 'total'
+        cur_metrics['branches'] = 'all'
+        cur_metrics['sample_cutoff'] = 10  # num means nothing
+        metrics_total.append(cur_metrics)
+
+        # for total sites set only terminal branches
+        obs_clade_terminal = obs_clade.rename(columns={'count': 'count_all', 'count_terminal': 'count'})
+        aa_subst = prepare_aa_subst(obs_clade_terminal, exp_aa_subst, aa_freqs_total_dct)
+        cur_metrics = calc_metrics(aa_subst)
+        cur_metrics['clade'] = clade
+        cur_metrics['branches'] = 'terminal'
+        cur_metrics['sites_sample'] = 'total'
+        cur_metrics['sample_cutoff'] = 10  # num means nothing
+        metrics_total.append(cur_metrics)
+
+        # for total sites set only non-terminal branches
+        obs_clade_nonterminal = obs_clade.rename(columns={'count': 'count_all', 'count_non_terminal': 'count'})
+        aa_subst = prepare_aa_subst(obs_clade_nonterminal, exp_aa_subst, aa_freqs_total_dct)
+        cur_metrics = calc_metrics(aa_subst)
+        cur_metrics['clade'] = clade
+        cur_metrics['branches'] = 'non-terminal'
+        cur_metrics['sites_sample'] = 'total'
         cur_metrics['sample_cutoff'] = 10  # num means nothing
         metrics_total.append(cur_metrics)
 
@@ -118,16 +139,17 @@ def main():
                 
                 cur_metrics = calc_metrics(aa_subst)
                 cur_metrics['clade'] = clade
+                cur_metrics['branches'] = 'all'
                 cur_metrics['sites_sample'] = label
                 cur_metrics['sample_cutoff'] = sample_cutoff*100
                 metrics_total.append(cur_metrics)
 
-    metrics_total_df = pd.DataFrame(metrics_total).set_index(['clade', 'sites_sample', 'sample_cutoff'])
+    metrics_total_df = pd.DataFrame(metrics_total).set_index(['clade', 'branches', 'sites_sample', 'sample_cutoff'])
     metrics_total_df.to_csv('data/fit_metrics_sites.csv', float_format='%g')
 
 
     _ = metrics_total_df[['spearman_corr','r2', 'wape', 'mut_count']]\
-        .melt(ignore_index=False, var_name='metric').reset_index()
+        .melt(ignore_index=False, var_name='metric').reset_index().query('branches == "all"')
     g = sns.catplot(data=_, sharey=False, kind='box', col='metric', col_wrap=2,
                     y='value', x='sites_sample', hue='sample_cutoff',  
                     palette='Set2', height=3, aspect=1.25,
@@ -141,7 +163,7 @@ def main():
     g.savefig('./figures/fit_metrics_sites.pdf')
 
     _ = metrics_total_df[['r2']]\
-        .melt(ignore_index=False, var_name='metric').reset_index()
+        .melt(ignore_index=False, var_name='metric').reset_index().query('branches == "all"')
     g = sns.catplot(data=_, sharey=False, kind='box', col='metric', col_wrap=1,
                     y='value', x='sites_sample', hue='sample_cutoff',  
                     palette='Set2', height=4, aspect=1.2,

@@ -243,7 +243,7 @@ def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_fr
     aa_subst = aa_subst[aa_subst['aa1'] != aa_subst['aa2']]
     aa_subst['nexp'] = aa_subst['rate_exp'] / aa_subst['rate_exp'].sum() * aa_subst['nobs_scaled'].sum()
     aa_subst['diff'] = aa_subst['nobs_scaled'] - aa_subst['nexp']
-    aa_subst['mape'] = aa_subst['diff'] / aa_subst['nobs_scaled']
+    aa_subst['pe'] = aa_subst['diff'] / aa_subst['nobs_scaled']
     aa_subst['nobs_freqs'] = aa_subst['nobs_scaled'] / aa_subst['nobs_scaled'].sum()
     aa_subst['nexp_freqs'] = aa_subst['nexp'] / aa_subst['nexp'].sum()
     return aa_subst
