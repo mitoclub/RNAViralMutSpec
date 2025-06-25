@@ -12,11 +12,9 @@ from utils import (
     prepare_rnd_exp_aa_subst, plot_obs_vs_exp,
 )
 
-debug = True
-
-if debug:
-    os.chdir('./viral_spectra')
-
+wd = 'viral_spectra'
+if not os.getcwd().endswith(wd):
+    os.chdir(wd)
 
 def read_aa_counts_from_files(viral_spectra: pd.DataFrame) -> pd.DataFrame:
     indir = './data/nemu_inputs'

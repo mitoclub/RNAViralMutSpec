@@ -1,0 +1,10 @@
+taxname_nemu,taxname_Bloom_etal,fuzzy_similarity,cosine_similarity
+West Nile virus,West Nile virus,100,0.993923599019993
+Influenza A virus,Influenza A H3N2,73,0.9954244038229432
+Influenza A virus,Influenza A H1N1,73,0.9948188363161503
+Dengue virus,Dengue virus 1,92,0.9993920040530321
+Dengue virus,Dengue virus 2,92,0.996907757792594
+Dengue virus,Dengue virus 3,92,0.9979131135647646
+Dengue virus,Dengue virus 4,92,0.9960731631169812
+Enterovirus A,Enterovirus A71,93,0.9962147004273044
+Enterovirus D,Enterovirus D68,93,0.9983968013883892

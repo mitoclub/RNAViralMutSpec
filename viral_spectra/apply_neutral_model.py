@@ -15,8 +15,10 @@ from utils import (
 
 debug = True
 
-if debug:
-    os.chdir('./viral_spectra')
+
+wd = 'viral_spectra'
+if not os.getcwd().endswith(wd):
+    os.chdir(wd)
 
 
 def read_aa_counts_from_files(viral_spectra: pd.DataFrame) -> pd.DataFrame:
@@ -70,7 +72,7 @@ def main():
 
     metrics_total = []
     i = 0
-    nrows, ncols = 5, 4
+    nrows, ncols = 3, 3
     fig, axs = plt.subplots(nrows, ncols, figsize=(ncols*4, nrows*4-1.5))
     for (vir, group), obs_vir in tqdm.tqdm(
             viral_spectra.groupby(['virusname', 'Type']), 
@@ -92,11 +94,12 @@ def main():
         cur_metrics['virusname'] = vir
         metrics_total.append(cur_metrics)
 
-        ax = axs[i // ncols, i % ncols]
-        plot_obs_vs_exp(
-            aa_subst, ax=ax, show=False, 
-            text=f"{vir} ({group})", text_x=-2.2, text_y=-4.)
-        i += 1
+        if obs_vir['count'].sum() > 2000:
+            ax = axs[i // ncols, i % ncols]
+            plot_obs_vs_exp(
+                aa_subst, ax=ax, show=False, 
+                text=f"{vir} ({group})", text_x=-2.2, text_y=-4.)
+            i += 1
     
     # # unshow empty plots
     # axs[i // ncols, i % ncols].axis('off')
