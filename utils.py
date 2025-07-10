@@ -237,13 +237,13 @@ def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_fr
     aa_subst['aa2'] = aa_subst['aa2'].map(amino_acid_codes)
     ref_aa_total_cnt = sum([x for x in ref_aa_freqs.values() if x > 0])
     aa_subst['ref_aa1_freq'] = aa_subst['aa1'].map(ref_aa_freqs) / ref_aa_total_cnt
-    aa_subst['nobs_scaled'] = aa_subst['nobs'] / aa_subst['ref_aa1_freq']
+    aa_subst['nobs_scaled'] = (aa_subst['nobs'] / aa_subst['ref_aa1_freq']).replace(np.inf, np.nan)
     aa_subst['nobs_scaled'] = aa_subst['nobs_scaled'] / aa_subst['nobs_scaled'].sum() * aa_subst['nobs'].sum()
     aa_subst = aa_subst.merge(exp_aa_subst.rename(columns={'rate': 'rate_exp'}), 'right').fillna(0)
     aa_subst = aa_subst[aa_subst['aa1'] != aa_subst['aa2']]
     aa_subst['nexp'] = aa_subst['rate_exp'] / aa_subst['rate_exp'].sum() * aa_subst['nobs_scaled'].sum()
     aa_subst['diff'] = aa_subst['nobs_scaled'] - aa_subst['nexp']
-    aa_subst['pe'] = aa_subst['diff'] / aa_subst['nobs_scaled']
+    aa_subst['pe'] = aa_subst['diff'] / aa_subst['nobs_scaled'] * 100  # %
     aa_subst['nobs_freqs'] = aa_subst['nobs_scaled'] / aa_subst['nobs_scaled'].sum()
     aa_subst['nexp_freqs'] = aa_subst['nexp'] / aa_subst['nexp'].sum()
     return aa_subst
@@ -360,6 +360,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
         'rmse': rmse,
         'log_likelihood': log_likelihood,
         'mut_count': mut_count,
+        'mut_type_count': aa_subst.nobs.ne(0).sum(),
     }
     return metrics
 
