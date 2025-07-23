@@ -9,10 +9,13 @@ import seaborn as sns
 import tqdm
 from pymutspec.io import read_genbank_ref
 from pymutspec.annotation import CodonAnnotation
+from scipy.spatial.distance import euclidean, cityblock
+
 
 from utils import (
     amino_acid_codes, prepare_aa_subst,
     calc_metrics, prepare_exp_aa_subst, 
+    get_equilibrium_freqs,
 )
 
 wd = 'sars-cov-2_aa_subst'
@@ -78,9 +81,13 @@ def main():
     site_rates_df = pd.read_csv('data/ref_sites_rates_cat4.csv')
 
     metrics_total = []
+    d_to_eq_data = []
     for clade in tqdm.tqdm(clades_spectra.clade.unique(), desc='Clades'):
         spectrum_clade = clades_spectra[clades_spectra['clade'] == clade]
         exp_aa_subst, _ = prepare_exp_aa_subst(spectrum_clade, 'rate', 1)
+
+        spectrum_clade['rate'] /= spectrum_clade['rate'].sum()
+        _, cur_aa_freq = get_equilibrium_freqs(spectrum_clade, 'rate')
 
         # Select clade OBS substitutions
         obs_clade = obs[obs['clade'] == clade].copy()
@@ -104,6 +111,20 @@ def main():
             cur_metrics['rate_cat'] = rcat
             metrics_total.append(cur_metrics)
 
+            # Distance to equilibrium estimation
+            cur_aa_freq['obs_cnt'] = cur_aa_freq['aa'].map(cur_aa_freqs_dct).fillna(0)
+            cur_aa_freq['obs_freq'] = cur_aa_freq['obs_cnt'] / cur_aa_freq['obs_cnt'].sum()
+
+            dm = cityblock(cur_aa_freq['eq_freq'], cur_aa_freq['obs_freq'])
+            de = euclidean(cur_aa_freq['eq_freq'], cur_aa_freq['obs_freq'])
+
+            d_to_eq_data.append({
+                'clade': clade,
+                'rcat': rcat,
+                'cityblock': dm, 
+                'euclidean': de, 
+            })
+
         # for total sites set
         aa_subst = prepare_aa_subst(obs_clade, exp_aa_subst, aa_freqs_total_dct)
         cur_metrics = calc_metrics(aa_subst)
@@ -116,6 +137,9 @@ def main():
             .drop(['mape','wape','slope','intercept','pearson_corr','pearson_p',
                    'ks_stat','ks_p','rmse','log_likelihood'], axis=1)
     metrics_total_df.to_csv('data/fit_metrics_site_rate_cat4.csv', float_format='%g')
+
+    d_to_eq_df = pd.DataFrame(d_to_eq_data)
+    d_to_eq_df.to_csv('data/dist_to_eq_site_rate_cat4.csv', float_format='%g', index=False)
 
 
     print(metrics_total_df.reset_index().query('rate_cat == "any"')\
