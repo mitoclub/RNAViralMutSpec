@@ -70,6 +70,7 @@ def main():
     obs['aa2'] = obs['aa_mutation'].str[-1]
 
     metrics_total = []
+    aa_subst_total = []
     for clade in tqdm.tqdm(clades_spectra.clade.unique(), desc='Clades'):
         spectrum_clade = clades_spectra[clades_spectra['clade'] == clade]
         exp_aa_subst, exp_aa_subst_matrix = prepare_exp_aa_subst(spectrum_clade, 'rate', 1)
@@ -136,7 +137,12 @@ def main():
                 
                 cur_aa_freqs_dct = get_site_specific_aa_counts(sites)
                 aa_subst = prepare_aa_subst(df_obs, exp_aa_subst, cur_aa_freqs_dct)
-                
+                aa_subst['clade'] = clade
+                aa_subst['branches'] = 'all'
+                aa_subst['sites_sample'] = label
+                aa_subst['sample_cutoff'] = sample_cutoff*100
+                aa_subst_total.append(aa_subst)
+
                 cur_metrics = calc_metrics(aa_subst)
                 cur_metrics['clade'] = clade
                 cur_metrics['branches'] = 'all'
@@ -146,6 +152,9 @@ def main():
 
     metrics_total_df = pd.DataFrame(metrics_total).set_index(['clade', 'branches', 'sites_sample', 'sample_cutoff'])
     metrics_total_df.to_csv('data/fit_metrics_sites.csv', float_format='%g')
+
+    aa_subst_total_df = pd.concat(aa_subst_total, ignore_index=True)
+    aa_subst_total_df.to_csv('data/aa_subst_total_rates.csv', float_format='%g')
 
 
     _ = metrics_total_df[['spearman_corr','r2', 'wape', 'mut_count']]\
