@@ -79,6 +79,9 @@ def nuc_spectrum_to_matrix(spec):
     # will the diagonal with 'outflow' term to guarantee conservation of probability
     d = M.sum(axis=0)
     np.fill_diagonal(M,-d)
+    
+    # TODO transpose matrix
+    
     return M
 
 
