@@ -76,11 +76,15 @@ def nuc_spectrum_to_matrix(spec):
                 M[i2,i1] = spec[f"{n1}>{n2}"]
     # normalize off-diagonal rates (just for standardization, doesn't affect the results)
     M /= M.sum()
+    
+    # TODO drop diagonal filling, i.e. don't convert to Q matrix, just return P matrix
+
     # will the diagonal with 'outflow' term to guarantee conservation of probability
     d = M.sum(axis=0)
     np.fill_diagonal(M,-d)
+
     
-    # TODO transpose matrix
+    # TODO transpose matrix or change order of indexes in for-loop above
     
     return M
 
