@@ -1,0 +1,98 @@
+==> 10407.fasta <==
+>BAB82387.1 polymerase [Hepatitis B virus]
+
+==> 10990.fasta <==
+>LC590230.1:36-4430 Rice black streaked dwarf virus YCPC genomic RNA, segment S1, complete sequence
+
+==> 11082.fasta <==
+>JF488088.1:97-10398 West Nile virus isolate WNV-1/US/BID-V5178/2004, complete genome
+
+==> 11320_1.fasta <==
+>PQ654694.1:1-2280 Influenza A virus (A/California/LACPHL-INF00628/2024(H1N1)) segment 1 polymerase PB2 (PB2) gene, complete cds
+
+==> 11320_2.fasta <==
+>PQ654701.1:1-2274 Influenza A virus (A/California/LACPHL-INF00630/2024(H1N1)) segment 2 polymerase PB1 (PB1) gene, complete cds; and nonfunctional PB1-F2 protein (PB1-F2) gene, complete sequence
+
+==> 1133363.fasta <==
+>PQ424228.1:1-4212 Schmallenberg virus isolate 4884/IT|2021 segment M M polyprotein (M) gene, complete cds
+
+==> 1157337.fasta <==
+>WPW59343.1 lambda 3 protein [Piscine orthoreovirus]
+
+==> 118655.fasta <==
+>PQ550995.1:1-6759 Oropouche virus isolate LEIAL3270 segment L RNA polymerase gene, complete cds
+
+==> 11983.fasta <==
+>KF429783.1:2-5371 Norovirus Hu/GI.1/8K/1979/USA, complete genome
+
+==> 12092.fasta <==
+>NP_041007.1 hypothetical protein HAVgp1 [Hepatovirus A]
+
+==> 12110.fasta <==
+>GU384683.1:1181-8179 Foot-and-mouth disease virus - type O isolate PAK/45/2008, complete genome
+
+==> 12162.fasta <==
+>AB046398.1:107-9505 Citrus tristeza virus genomic RNA, complete genome, seedling yellows strain
+
+==> 12637.fasta <==
+>JQ287663.1:79-10257 Dengue virus 1 isolate DENV-1/VN/BID-V2753/2007, complete genome
+
+==> 138948.fasta <==
+>LC637981.1:746-8062 Recombinant Enterovirus A71 DNA, complete genome, clone: SK-EV006-EGFP
+
+==> 138950.fasta <==
+>MG212475.1:748-7371 Poliovirus 2 isolate 21348_T2, complete genome
+
+==> 138951.fasta <==
+>OP267503.1:697-7263 Enterovirus D68 isolate CF_574346_FRA_2021, complete genome
+
+==> 162145.fasta <==
+>OL794386.1:7314-13331 Human metapneumovirus isolate NL/15/16/A2, complete genome
+
+==> 1678143.fasta <==
+>LC176492.1:26-5137 Orthohepevirus A genomic RNA, complete genome, genotype 3, isolate: HE-JA16-0578
+
+==> 1933178.fasta <==
+>MW194116.1:31-6786 Akabane virus isolate CX-01 segment L, complete sequence
+
+==> 198112.fasta <==
+>MF770715.1:1146-9827 Deformed wing virus strain Liaoning-1, complete genome
+
+==> 28295.fasta <==
+>MF577027.1:12675-20636 Porcine epidemic diarrhea virus strain PEDV/Belgorod/dom/2008, complete genome
+
+==> 28344.fasta <==
+>NC_001961.1:190-7701 Porcine respiratory and reproductive syndrome virus, complete genome
+
+==> 3052230.fasta <==
+>XKR94446.1 NS5A, partial [Hepacivirus hominis]
+
+==> 3052493.fasta <==
+>OR915063.1:83-6553 Orthohantavirus puumalaense isolate Mittifjaerden RNA polymerase gene, complete cds
+
+==> 3052763.fasta <==
+>input
+
+==> 351073.fasta <==
+>AXM44651.1 lambda 3 protein [Mammalian orthoreovirus]
+
+==> 38170.fasta <==
+>AED99916.1 lambda A [Avian orthoreovirus]
+
+==> 40054.fasta <==
+>input
+
+==> 54290_1985356.fasta <==
+>D87262.1:553-9081 GB virus C genomic RNA, complete genome, isolate: GSI85
+
+==> 57482.fasta <==
+>OR888949.1:5467-11850 European bat lyssavirus 1 isolate Anses9, complete genome
+
+==> 693997.fasta <==
+>OQ540922.1:20363-24727 Canine coronavirus isolate VuCCoV_191109SY, complete genome
+
+==> 694014.fasta <==
+>DQ001339.1:12456-20414 Avian infectious bronchitis virus isolate IBV-p65, complete genome
+
+==> 77763.fasta <==
+>AHF50195.1 VP1 [Banna virus]

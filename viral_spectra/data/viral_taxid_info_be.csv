@@ -1,0 +1,33 @@
+taxid,species,host,gene,comment,Type,genus,family,order,class,phylum,kingdom,superkingdom,Nucleotide_Count
+38170,Avian orthoreovirus,,,,ds,Orthoreovirus__10882,Reoviridae__10880,Reovirales__2732541,Resentoviricetes__2732459,Duplornaviricota__2732405,Orthornavirae__2732396,Viruses__10239,4363.0
+1157337,Piscine orthoreovirus,,,,ds,Orthoreovirus__10882,Reoviridae__10880,Reovirales__2732541,Resentoviricetes__2732459,Duplornaviricota__2732405,Orthornavirae__2732396,Viruses__10239,2478.0
+351073,Mammalian orthoreovirus,,,,ds,Orthoreovirus__10882,Reoviridae__10880,Reovirales__2732541,Resentoviricetes__2732459,Duplornaviricota__2732405,Orthornavirae__2732396,Viruses__10239,2366.0
+40054,Epizootic hemorrhagic disease virus,,,,ds,Orbivirus__10892,Reoviridae__10880,Reovirales__2732541,Resentoviricetes__2732459,Duplornaviricota__2732405,Orthornavirae__2732396,Viruses__10239,1773.0
+10990,Rice black streaked dwarf virus,Avena sativa ,P1 protein ,,ds,Fijivirus__10988,Reoviridae__10880,Reovirales__2732541,Resentoviricetes__2732459,Duplornaviricota__2732405,Orthornavirae__2732396,Viruses__10239,1149.0
+77763,Banna virus,,RNA-dependent RNA polymerase ,,ds,Seadornavirus__208294,Reoviridae__10880,Reovirales__2732541,Resentoviricetes__2732459,Duplornaviricota__2732405,Orthornavirae__2732396,Viruses__10239,506.0
+10407,Hepatitis B virus,Homo sapiens ,,partially ds,ds,,,,,,,,
+11320,Influenza A virus,Homo sapiens ,"Segment 1, polymerase PB2 ",<3000bp,-,Alphainfluenzavirus__197911,Orthomyxoviridae__11308,Articulavirales__2499411,Insthoviricetes__2497577,Negarnaviricota__2497569,Orthornavirae__2732396,Viruses__10239,1117536.0
+162145,Human metapneumovirus,Homo sapiens ,large polymerase protein ,,-,Metapneumovirus__162387,Pneumoviridae__11244,Mononegavirales__11157,Monjiviricetes__2497574,Negarnaviricota__2497569,Orthornavirae__2732396,Viruses__10239,12076.0
+3052493,Puumala orthohantavirus,Myodes glareolus ,polymerase ,oldTaxid:1980486 ,-,,,,,,,,
+118655,Oropouche orthobunyavirus,Homo sapiens ,RNA polymerase ,OldTaxid:1933309,-,,,,,,,,
+3052763,Rice stripe tenuivirus,,,OldTaxid:12331,-,,,,,,,,
+1933178,Akabane orthobunyavirus,goat,RNA-dependent RNA polymerase ,,-,Orthobunyavirus__11572,Peribunyaviridae__1980416,Bunyavirales__1980410,Ellioviricetes__2497576,Negarnaviricota__2497569,Orthornavirae__2732396,Viruses__10239,720.0
+57482,European bat 1 lyssavirus,Eptesicus serotinus ,polymerase ,,-,Lyssavirus__11286,Rhabdoviridae__11270,Mononegavirales__11157,Monjiviricetes__2497574,Negarnaviricota__2497569,Orthornavirae__2732396,Viruses__10239,645.0
+1133363,Schmallenberg orthobunyavirus,Ovis aries,M polyprotein,OldTaxid:2560743,-,,,,,,,,
+11983,Norwalk virus,canine ,polyprotein ,,+,Norovirus__142786,Caliciviridae__11974,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,60009.0
+12637,Dengue virus,Homo sapiens ,polyprotein ,,+,Flavivirus__11051,Flaviviridae__11050,Amarillovirales__2732545,Flasuviricetes__2732462,Kitrinoviricota__2732406,Orthornavirae__2732396,Viruses__10239,50000.0
+138948,Enterovirus A,Homo sapiens ,polyprotein ,,+,Enterovirus__12059,Picornaviridae__12058,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,44425.0
+28344,Porcine reproductive and respiratory syndrome virus,porcine ,polyprotein ,,+,,Arteriviridae__76803,Nidovirales__76804,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,41373.0
+11082,West Nile virus,Culex pipiens ,polyprotein ,,+,Flavivirus__11051,Flaviviridae__11050,Amarillovirales__2732545,Flasuviricetes__2732462,Kitrinoviricota__2732406,Orthornavirae__2732396,Viruses__10239,23308.0
+694014,Avian coronavirus,Gallus gallus ,polyprotein 1b,,+,Gammacoronavirus__694013,Coronaviridae__11118,Nidovirales__76804,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,18179.0
+12110,Foot-and-mouth disease virus,buffalo ,polyprotein ,,+,Aphthovirus__12109,Picornaviridae__12058,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,15462.0
+138950,Enterovirus C,Homo sapiens ,polyprotein ,,+,Enterovirus__12059,Picornaviridae__12058,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,15075.0
+1678143,Orthohepevirus A,Homo sapiens ,non-structural polyprotein ,,+,Orthohepevirus__1678141,Hepeviridae__291484,Hepelivirales__2732543,Alsuviricetes__2732461,Kitrinoviricota__2732406,Orthornavirae__2732396,Viruses__10239,11182.0
+28295,Porcine epidemic diarrhea virus,porcine ,ORF1B ,,+,Alphacoronavirus__693996,Coronaviridae__11118,Nidovirales__76804,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,7926.0
+12162,Citrus tristeza virus,Citrus reticulata (mandarin) ,polyprotein ,,+,Closterovirus__12160,Closteroviridae__69973,Martellivirales__2732544,Alsuviricetes__2732461,Kitrinoviricota__2732406,Orthornavirae__2732396,Viruses__10239,7456.0
+138951,Enterovirus D,Homo sapiens ,polyprotein ,,+,Enterovirus__12059,Picornaviridae__12058,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,6313.0
+693997,Alphacoronavirus 1,canine ,spike protein,,+,Alphacoronavirus__693996,Coronaviridae__11118,Nidovirales__76804,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,6193.0
+54290,Pegivirus C,Homo sapiens ,polyprotein ,OldTaxid:1985356,+,,,,,,,,
+198112,Deformed wing virus,honeybee ,polyprotein ,,+,Iflavirus__232799,Iflaviridae__699189,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,5431.0
+3052230,Hepacivirus hominis,Homo sapiens ,,,+,,,,,,,,
+12092,Hepatovirus A,Homo sapiens ,,,+,,,,,,,,
