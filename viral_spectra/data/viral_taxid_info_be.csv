@@ -27,7 +27,7 @@ taxid,species,host,gene,comment,Type,genus,family,order,class,phylum,kingdom,sup
 12162,Citrus tristeza virus,Citrus reticulata (mandarin) ,polyprotein ,,+,Closterovirus__12160,Closteroviridae__69973,Martellivirales__2732544,Alsuviricetes__2732461,Kitrinoviricota__2732406,Orthornavirae__2732396,Viruses__10239,7456.0,60.0,9410.0,2522.4003,3.4407491008595956,2522.399633,3786.073179
 138951,Enterovirus D,Homo sapiens ,polyprotein ,,+,Enterovirus__12059,Picornaviridae__12058,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,6313.0,492.0,6567.0,10921.328599999999,10.779690773650147,10921.332136,12536.935507
 693997,Alphacoronavirus 1,canine ,spike protein,,+,Alphacoronavirus__693996,Coronaviridae__11118,Nidovirales__76804,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,6193.0,105.0,4414.0,1695.72875,2.099995012109971,1695.728935,2240.749999
-54290,Pegivirus C,Homo sapiens ,polyprotein ,OldTaxid:1985356,+,,,,,,,,,95.0,8551.0,36250.588,1.4721713710051234,36250.590662,37864.145833
+54290,GB virus C,Homo sapiens ,polyprotein ,OldTaxid:1985356,+,,,,,,,,,95.0,8551.0,36250.588,1.4721713710051234,36250.590662,37864.145833
 198112,Deformed wing virus,honeybee ,polyprotein ,,+,Iflavirus__232799,Iflaviridae__699189,Picornavirales__464095,Pisoniviricetes__2732506,Pisuviricota__2732408,Orthornavirae__2732396,Viruses__10239,5431.0,207.0,8691.0,8686.3228,5.984528308054257,8686.333614,9869.119359
 3052230,Hepacivirus hominis,Homo sapiens ,,,+,,,,,,,,,,,24037.741,6.63343322956949,24037.740199,29570.270582999998
 12092,Hepatovirus A,Homo sapiens ,,,+,,,,,,,,,,,7684.810799999999,5.784156299857174,7684.808573,8440.681183
