@@ -1,3 +1,4 @@
+from io import StringIO
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -33,6 +34,37 @@ amino_acid_codes = {
     "V": "Val",
     "*": "*",
 }
+
+grantham_matrix_str = '''
+FIRST	R	L	P	T	A	V	G	I	F	Y	C	H	Q	N	K	D	E	M	W
+S	110	145	74	58	99	124	56	142	155	144	112	89	68	46	121	65	80	135	177
+R	0	102	103	71	112	96	125	97	97	77	180	29	43	86	26	96	54	91	101
+L	0	0	98	92	96	32	138	5	22	36	198	99	113	153	107	172	138	15	61
+P	0	0	0	38	27	68	42	95	114	110	169	77	76	91	103	108	93	87	147
+T	0	0	0	0	58	69	59	89	103	92	149	47	42	65	78	85	65	81	128
+A	0	0	0	0	0	64	60	94	113	112	195	86	91	111	106	126	107	84	148
+V	0	0	0	0	0	0	109	29	50	55	192	84	96	133	97	152	121	21	88
+G	0	0	0	0	0	0	0	135	153	147	159	98	87	80	127	94	98	127	184
+I	0	0	0	0	0	0	0	0	21	33	198	94	109	149	102	168	134	10	61
+F	0	0	0	0	0	0	0	0	0	22	205	100	116	158	102	177	140	28	40
+Y	0	0	0	0	0	0	0	0	0	0	194	83	99	143	85	160	122	36	37
+C	0	0	0	0	0	0	0	0	0	0	0	174	154	139	202	154	170	196	215
+H	0	0	0	0	0	0	0	0	0	0	0	0	24	68	32	81	40	87	115
+Q	0	0	0	0	0	0	0	0	0	0	0	0	0	46	53	61	29	101	130
+N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	94	23	42	142	174
+K	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	101	56	95	110
+D	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	45	160	181
+E	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	126	152
+M	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	67
+'''
+
+grantham = pd.read_csv(StringIO(grantham_matrix_str), sep='\t', index_col=0).replace(0, np.nan)
+grantham.index.name = 'aa1'
+grantham_long = grantham.melt(ignore_index=False, var_name='aa2', value_name='grantham_distance').dropna().reset_index()
+grantham_long['aa1'] = grantham_long['aa1'].map(amino_acid_codes)
+grantham_long['aa2'] = grantham_long['aa2'].map(amino_acid_codes)
+grantham_long = pd.concat([grantham_long, grantham_long.rename(columns={'aa1':'aa2', 'aa2':'aa1'})], ignore_index=True)
+del grantham
 
 
 def collect_possible_changes(gc, spectrum_dict=None):
@@ -201,6 +233,30 @@ def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_pat
     return exp_aa_subst, exp_aa_subst_matrix
 
 
+def prepare_exp_aa_subst_codons(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None, codon_pos='all'): 
+    df_changes = collect_possible_changes(gc=gc)
+    spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
+    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
+
+    if codon_pos == 'all':
+        df_changes_flt = df_changes.query('aa1 != "*" & aa2 != "*"')
+    elif codon_pos == '12':
+        df_changes_flt = df_changes.query('aa1 != "*" & aa2 != "*" & pic in [0, 1]')
+    elif isinstance(codon_pos, int):
+        pic=codon_pos - 1
+        df_changes_flt = df_changes.query('aa1 != "*" & aa2 != "*" & pic == @pic')
+    else:
+        raise ValueError(f"Invalid codon_pos value: {codon_pos}. Allowed values are 'all', '12', 1, 2, or 3.")
+
+    ## Calculate expected AA substitutions matrix
+    exp_aa_subst = df_changes_flt.groupby(['aa1', 'aa2'])['rate'].sum().reset_index()
+    
+    if save_path:
+        exp_aa_subst.to_csv(save_path, float_format='%g', index=False)
+    exp_aa_subst_matrix = exp_aa_subst.pivot(index='aa1', columns='aa2', values='rate').fillna(0.)
+    return exp_aa_subst, exp_aa_subst_matrix
+
+
 def prepare_exp_cdn_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None):
     df_changes = collect_possible_changes(gc=gc)
     spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
@@ -243,6 +299,8 @@ def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_fr
     aa_subst['pe'] = aa_subst['diff'] / aa_subst['nobs_scaled'] * 100  # %
     aa_subst['nobs_freqs'] = aa_subst['nobs_scaled'] / aa_subst['nobs_scaled'].sum()
     aa_subst['nexp_freqs'] = aa_subst['nexp'] / aa_subst['nexp'].sum()
+    aa_subst['obs_relative_freq'] = (aa_subst['nobs_freqs'] / aa_subst['nexp_freqs'])
+    aa_subst = aa_subst.merge(grantham_long, 'left')
     return aa_subst
 
 
@@ -341,6 +399,11 @@ def calc_metrics(aa_subst: pd.DataFrame):
     slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
 
     r2 = r2_score(y_true, y_pred)
+
+    corr_chem_vs_rel_freq = pearsonr(
+        aa_subst.obs_relative_freq, 
+        aa_subst.grantham_distance,
+    )
     
     metrics = {
         'r2': r2,
@@ -351,6 +414,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
         'spearman_corr': spearman_corr,
         'spearman_p': spearman_p,
         'pearson_corr': pearson_corr,
+        'pearson_corr_squared': pearson_corr**2,
         'pearson_p': pearson_p,
         'ks_stat': ks_stat,
         'ks_p': ks_p,
@@ -358,6 +422,8 @@ def calc_metrics(aa_subst: pd.DataFrame):
         'log_likelihood': log_likelihood,
         'mut_count': mut_count,
         'mut_type_count': aa_subst.nobs.ne(0).sum(),
+        'corr_chem_vs_rel_freq': corr_chem_vs_rel_freq.correlation,
+        'corr_chem_vs_rel_freq_pval': corr_chem_vs_rel_freq.pvalue,
     }
     return metrics
 

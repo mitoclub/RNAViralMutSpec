@@ -2,9 +2,11 @@
 
 ## Structure
 
+TODO
+2 dirs: sars-cov-2 and other_viruses
+
 1. [SARS-CoV-2 amino acid substitutions ananlysis](./sars-cov-2_aa_subst/)
 2. [RNA viruses mutational spectra derivation and analysis](./viral_spectra/)
-3. [RNA viruses global thrend analysis](./global_thrend/)
 
 ## Data
 
