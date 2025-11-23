@@ -1,4 +1,14 @@
-# Notes
+
+## Analysis structure
+
+1. derive viral spectra
+2. compare them with reference ones + analyze differences and similarities
+3. check spectra impact on amino acid substitutions
+4. compare observed and expected amino acid frequencies differences
+5. RdRp analysis
+
+
+## Notes
 
 <!-- 
 Need to filter small parts using seqkit filter -->
