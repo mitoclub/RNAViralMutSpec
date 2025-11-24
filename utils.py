@@ -120,30 +120,24 @@ def cdn_spectrum_to_matrix(df_changes: pd.DataFrame):
 
 
 def get_equilibrium_probabilities(Pmatrix: np.ndarray):
+    """
+    Calculates equilibrium probabilities using the eigenvector method.
+    Solves pi @ Q = 0  =>  Q.T @ pi.T = 0
+    """
     Q = Pmatrix.copy()
+    # Ensure Q is a valid generator (redundant if Q is already valid, but safe)
     Q = Q - np.diag(np.sum(Q, axis=1))
 
+    # Find eigenvalues and eigenvectors of Transpose(Q)
     values, vectors = np.linalg.eig(Q.T)
+    
+    # Extract eigenvector associated with eigenvalue ~ 0
+    # Note: Use real parts to handle potential complex numerical noise
     pi = vectors[:, np.isclose(values, 0)].real.flatten()
+    
+    # Normalize to sum to 1
     pi = pi / pi.sum()
     return pi
-
-
-def simulate_markov_continual(
-        transition_Pmatrix: np.ndarray, initial_vector: np.ndarray, 
-        num_iterations: int, delta_t=0.01):
-    pi = initial_vector.copy()
-    data = [pi.copy()]
-    Q = transition_Pmatrix.copy()
-    Q = Q - np.diag(np.sum(Q, axis=1))
-    for _ in range(num_iterations):
-        pi_new = pi + delta_t * (pi @ Q)
-        pi_new = pi_new / pi_new.sum()
-        data.append(pi_new.copy())
-        if np.linalg.norm(pi_new - pi) < 1e-8:
-            break
-        pi = pi_new
-    return data
 
 
 def get_equilibrium_freqs(spectrum: pd.DataFrame, rate_col='MutSpec', gc=1):
