@@ -645,7 +645,7 @@ def calculate_truncated_mean(alpha, scale, lower, upper):
 
 
 def categorize_site_rates_robust_plus_invariant(
-        mut_counts, n_categories=6, hotspot_percentile=99.0, plot=False):
+        mut_counts, n_categories=6, hotspot_percentile=99.0, plot=False, verbose=True):
     """
     Categorizes sites into:
     - Category 0: Invariable/Zero observed mutations
@@ -674,7 +674,8 @@ def categorize_site_rates_robust_plus_invariant(
     rates_normal = rates_nonzero[mask_normal]
     rates_hotspot = rates_nonzero[mask_hotspot]
     
-    print(f"Summary: {len(rates_zero)} zero sites, {len(rates_normal)} gamma sites, {len(rates_hotspot)} hotspots.")
+    if verbose:
+        print(f"Summary: {len(rates_zero)} zero sites, {len(rates_normal)} gamma sites, {len(rates_hotspot)} hotspots.")
 
     # 4. Fit Gamma to NORMAL (non-zero, non-hotspot) sites
     # IMPORTANT: floc=0 constraints the fit to start at 0, but since we removed exact zeros,

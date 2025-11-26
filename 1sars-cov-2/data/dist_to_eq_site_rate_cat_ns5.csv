@@ -1,191 +1,227 @@
 clade,rcat,cityblock,euclidean,time_period
-20A,1,0.702961,0.270238,Early clades
-20A,4,1.11191,0.37247,Early clades
-20A,3,1.01223,0.346467,Early clades
-20A,2,0.899885,0.306428,Early clades
-20A,5,1.19594,0.425533,Early clades
-20B,1,0.696848,0.269994,Early clades
-20B,4,1.10794,0.372197,Early clades
-20B,3,1.00811,0.346152,Early clades
-20B,2,0.895075,0.306164,Early clades
-20B,5,1.19851,0.426028,Early clades
-20C,1,0.57889,0.211001,Early clades
-20C,4,1.01538,0.321253,Early clades
-20C,3,0.901828,0.292721,Early clades
-20C,2,0.781448,0.253175,Early clades
-20C,5,1.16966,0.387688,Early clades
-20E,1,0.659291,0.249619,Early clades
-20E,4,1.07955,0.354328,Early clades
-20E,3,0.975743,0.327865,Early clades
-20E,2,0.860129,0.287897,Early clades
-20E,5,1.18552,0.411739,Early clades
-20G,1,0.671052,0.251243,Early clades
-20G,4,1.09074,0.35719,Early clades
-20G,3,0.984472,0.329262,Early clades
-20G,2,0.865642,0.28932,Early clades
-20G,5,1.19759,0.414645,Early clades
-20I,1,0.627723,0.237359,Early clades
-20I,4,1.05774,0.343985,Early clades
-20I,3,0.950868,0.316865,Early clades
-20I,2,0.832327,0.276975,Early clades
-20I,5,1.18764,0.405174,Early clades
-20J,1,0.659093,0.244397,Early clades
-20J,4,1.08548,0.352547,Early clades
-20J,3,0.974859,0.323212,Early clades
-20J,2,0.854969,0.283302,Early clades
-20J,5,1.20885,0.412511,Early clades
-21C,1,0.651734,0.243944,Early clades
-21C,4,1.07437,0.349985,Early clades
-21C,3,0.968333,0.322555,Early clades
-21C,2,0.850352,0.282644,Early clades
-21C,5,1.1859,0.408478,Early clades
-21I,1,0.715714,0.277377,Early clades
-21I,4,1.11441,0.377003,Early clades
-21I,3,1.03044,0.353251,Early clades
-21I,2,0.909867,0.313132,Early clades
-21I,5,1.19681,0.428787,Early clades
-21J,1,0.71764,0.275495,Early clades
-21J,4,1.11141,0.37483,Early clades
-21J,3,1.02985,0.351408,Early clades
-21J,2,0.909342,0.311273,Early clades
-21J,5,1.19118,0.42579,Early clades
-21K,1,0.493774,0.163782,"Late clades
+20A,2,1.00701,0.343604,Early clades
+20A,1,0.937356,0.316556,Early clades
+20A,3,1.06229,0.356621,Early clades
+20A,0,0.854268,0.317141,Early clades
+20A,4,1.14038,0.381092,Early clades
+20A,5,1.23958,0.422179,Early clades
+20B,3,1.08303,0.363305,Early clades
+20B,2,1.01661,0.344475,Early clades
+20B,1,0.939702,0.320842,Early clades
+20B,0,0.866647,0.3187,Early clades
+20B,4,1.12349,0.37775,Early clades
+20B,5,1.33496,0.458365,Early clades
+20C,2,0.914139,0.293381,Early clades
+20C,1,0.854953,0.272673,Early clades
+20C,0,0.757701,0.26168,Early clades
+20C,4,1.05398,0.338187,Early clades
+20C,3,0.970205,0.313474,Early clades
+20C,5,1.15626,0.365957,Early clades
+20E,3,1.03382,0.339697,Early clades
+20E,1,0.956934,0.311121,Early clades
+20E,0,0.839719,0.299382,Early clades
+20E,2,0.986575,0.32903,Early clades
+20E,4,1.11903,0.368451,Early clades
+20E,5,1.24058,0.430264,Early clades
+20G,2,1.01675,0.334121,Early clades
+20G,3,1.04136,0.342952,Early clades
+20G,1,0.911339,0.303979,Early clades
+20G,0,0.844196,0.301298,Early clades
+20G,4,1.11823,0.369655,Early clades
+20G,5,1.24769,0.413411,Early clades
+20I,4,1.09719,0.357213,Early clades
+20I,3,0.983075,0.325695,Early clades
+20I,2,0.936168,0.308006,Early clades
+20I,1,0.788847,0.266721,Early clades
+20I,0,0.784696,0.287103,Early clades
+20I,5,1.19941,0.399223,Early clades
+20J,1,1.00722,0.322724,Early clades
+20J,2,1.05303,0.341845,Early clades
+20J,0,0.835999,0.296699,Early clades
+20J,3,1.06107,0.35265,Early clades
+20J,4,1.14644,0.379075,Early clades
+20J,5,1.37889,0.432598,Early clades
+21C,0,0.825515,0.293396,Early clades
+21C,1,0.956612,0.310751,Early clades
+21C,2,1.03784,0.335022,Early clades
+21C,4,1.10797,0.369423,Early clades
+21C,3,1.08928,0.347332,Early clades
+21C,5,1.22548,0.398704,Early clades
+21I,1,0.903016,0.313708,Early clades
+21I,2,1.01141,0.347559,Early clades
+21I,3,1.06851,0.36555,Early clades
+21I,0,0.859247,0.322851,Early clades
+21I,4,1.11807,0.383063,Early clades
+21I,5,1.25122,0.418416,Early clades
+21J,3,1.05861,0.359483,Early clades
+21J,4,1.12118,0.380462,Early clades
+21J,2,0.971761,0.329213,Early clades
+21J,1,0.72811,0.270576,Early clades
+21J,0,0.87364,0.340239,Early clades
+21J,5,1.1905,0.408817,Early clades
+21K,3,0.821755,0.248496,"Late clades
 (Omicron+)"
-21K,4,0.941436,0.278857,"Late clades
+21K,1,0.604968,0.184314,"Late clades
 (Omicron+)"
-21K,3,0.817658,0.248144,"Late clades
+21K,2,0.773718,0.2315,"Late clades
 (Omicron+)"
-21K,2,0.703944,0.209545,"Late clades
+21K,0,0.659181,0.22844,"Late clades
 (Omicron+)"
-21K,5,1.08663,0.347917,"Late clades
+21K,4,0.939962,0.282389,"Late clades
 (Omicron+)"
-21L,1,0.541384,0.190424,"Late clades
+21K,5,1.02247,0.327727,"Late clades
 (Omicron+)"
-21L,4,0.982263,0.301429,"Late clades
+21L,1,0.671104,0.214121,"Late clades
 (Omicron+)"
-21L,3,0.868382,0.273941,"Late clades
+21L,4,0.985959,0.304763,"Late clades
 (Omicron+)"
-21L,2,0.751804,0.234576,"Late clades
+21L,3,0.896962,0.280729,"Late clades
 (Omicron+)"
-21L,5,1.12092,0.3679,"Late clades
+21L,2,0.836087,0.261111,"Late clades
 (Omicron+)"
-22A,1,0.57319,0.199139,"Late clades
+21L,0,0.700919,0.244712,"Late clades
 (Omicron+)"
-22A,4,1.00798,0.310131,"Late clades
+21L,5,1.10988,0.361999,"Late clades
 (Omicron+)"
-22A,3,0.894173,0.281499,"Late clades
+22A,3,0.966182,0.297197,"Late clades
 (Omicron+)"
-22A,2,0.77884,0.241905,"Late clades
+22A,2,0.880009,0.277332,"Late clades
 (Omicron+)"
-22A,5,1.12907,0.373278,"Late clades
+22A,1,0.8611,0.264357,"Late clades
 (Omicron+)"
-22B,1,0.569278,0.195233,"Late clades
+22A,0,0.741077,0.248388,"Late clades
 (Omicron+)"
-22B,4,1.00295,0.306416,"Late clades
+22A,4,1.04627,0.331792,"Late clades
 (Omicron+)"
-22B,3,0.888863,0.277571,"Late clades
+22A,5,1.08329,0.351794,"Late clades
 (Omicron+)"
-22B,2,0.776267,0.23802,"Late clades
+22B,1,0.66423,0.21382,"Late clades
 (Omicron+)"
-22B,5,1.11731,0.368699,"Late clades
+22B,4,1.02268,0.313651,"Late clades
 (Omicron+)"
-22C,1,0.579735,0.206473,"Late clades
+22B,3,0.905457,0.283822,"Late clades
 (Omicron+)"
-22C,4,1.00974,0.314662,"Late clades
+22B,2,0.84976,0.259151,"Late clades
 (Omicron+)"
-22C,3,0.90131,0.288261,"Late clades
+22B,0,0.718573,0.250891,"Late clades
 (Omicron+)"
-22C,2,0.789534,0.248606,"Late clades
+22B,5,1.13971,0.365772,"Late clades
 (Omicron+)"
-22C,5,1.12448,0.376306,"Late clades
+22C,4,1.02119,0.325245,"Late clades
 (Omicron+)"
-22D,1,0.48796,0.15397,"Late clades
+22C,2,0.897483,0.280045,"Late clades
 (Omicron+)"
-22D,4,0.911919,0.266442,"Late clades
+22C,0,0.747881,0.255407,"Late clades
 (Omicron+)"
-22D,3,0.80108,0.238298,"Late clades
+22C,1,0.839393,0.26526,"Late clades
 (Omicron+)"
-22D,2,0.690361,0.199928,"Late clades
+22C,3,0.978875,0.305436,"Late clades
 (Omicron+)"
-22D,5,1.03999,0.33295,"Late clades
+22C,5,1.13378,0.392355,"Late clades
 (Omicron+)"
-22E,1,0.478006,0.155465,"Late clades
+22D,3,0.897211,0.258938,"Late clades
 (Omicron+)"
-22E,4,0.922227,0.270625,"Late clades
+22D,1,0.745947,0.220664,"Late clades
 (Omicron+)"
-22E,3,0.797737,0.239956,"Late clades
+22D,2,0.80651,0.240443,"Late clades
 (Omicron+)"
-22E,2,0.686893,0.201623,"Late clades
+22D,0,0.630507,0.201217,"Late clades
 (Omicron+)"
-22E,5,1.06794,0.340001,"Late clades
+22D,4,0.946937,0.280923,"Late clades
 (Omicron+)"
-22F,1,0.52508,0.176322,"Late clades
+22D,5,1.01739,0.316406,"Late clades
 (Omicron+)"
-22F,4,0.952946,0.286049,"Late clades
+22E,4,0.946661,0.285499,"Late clades
 (Omicron+)"
-22F,3,0.848131,0.260176,"Late clades
+22E,3,0.859896,0.251949,"Late clades
 (Omicron+)"
-22F,2,0.737413,0.221117,"Late clades
+22E,2,0.772498,0.230809,"Late clades
 (Omicron+)"
-22F,5,1.06883,0.35006,"Late clades
+22E,1,0.693804,0.203383,"Late clades
 (Omicron+)"
-23A,1,0.573461,0.199566,"Late clades
+22E,0,0.624591,0.204266,"Late clades
 (Omicron+)"
-23A,4,0.988724,0.305354,"Late clades
+22E,5,1.14967,0.350743,"Late clades
 (Omicron+)"
-23A,3,0.895011,0.281652,"Late clades
+22F,1,0.847632,0.252712,"Late clades
 (Omicron+)"
-23A,2,0.784292,0.242095,"Late clades
+22F,0,0.687823,0.225797,"Late clades
 (Omicron+)"
-23A,5,1.08601,0.36472,"Late clades
+22F,2,0.87202,0.271652,"Late clades
 (Omicron+)"
-23B,1,0.581443,0.198247,"Late clades
+22F,3,0.974561,0.297043,"Late clades
 (Omicron+)"
-23B,4,0.992622,0.304734,"Late clades
+22F,4,0.986308,0.300176,"Late clades
 (Omicron+)"
-23B,3,0.899409,0.280207,"Late clades
+22F,5,1.13585,0.368664,"Late clades
 (Omicron+)"
-23B,2,0.78869,0.240584,"Late clades
+23A,2,0.872655,0.269386,"Late clades
 (Omicron+)"
-23B,5,1.08314,0.362928,"Late clades
+23A,3,0.908974,0.292002,"Late clades
 (Omicron+)"
-23C,1,0.456625,0.138938,"Late clades
+23A,1,0.781299,0.242497,"Late clades
 (Omicron+)"
-23C,4,0.874988,0.252018,"Late clades
+23A,0,0.715871,0.244688,"Late clades
 (Omicron+)"
-23C,3,0.76171,0.222917,"Late clades
+23A,4,1.01149,0.313415,"Late clades
 (Omicron+)"
-23C,2,0.65327,0.185405,"Late clades
+23A,5,1.16417,0.389841,"Late clades
 (Omicron+)"
-23C,5,1.01468,0.320762,"Late clades
+23B,4,1.03698,0.320952,"Late clades
 (Omicron+)"
-23D,1,0.582166,0.203432,"Late clades
+23B,1,0.866498,0.264877,"Late clades
 (Omicron+)"
-23D,4,1.00339,0.310657,"Late clades
+23B,3,0.932338,0.29412,"Late clades
 (Omicron+)"
-23D,3,0.902323,0.285606,"Late clades
+23B,2,0.926307,0.283959,"Late clades
 (Omicron+)"
-23D,2,0.791604,0.245934,"Late clades
+23B,0,0.715713,0.241638,"Late clades
 (Omicron+)"
-23D,5,1.10677,0.37089,"Late clades
+23B,5,1.16166,0.361556,"Late clades
 (Omicron+)"
-23F,1,0.5767,0.200337,"Late clades
+23C,4,0.899484,0.264742,"Late clades
 (Omicron+)"
-23F,4,0.995661,0.307284,"Late clades
+23C,1,0.715272,0.209926,"Late clades
 (Omicron+)"
-23F,3,0.89698,0.282435,"Late clades
+23C,0,0.605943,0.187007,"Late clades
 (Omicron+)"
-23F,2,0.786261,0.242844,"Late clades
+23C,3,0.823973,0.236439,"Late clades
 (Omicron+)"
-23F,5,1.09643,0.367188,"Late clades
+23C,5,0.985467,0.30768,"Late clades
 (Omicron+)"
-24A,1,0.565774,0.194834,"Late clades
+23D,4,1.04045,0.32413,"Late clades
 (Omicron+)"
-24A,4,0.99957,0.305706,"Late clades
+23D,1,0.882088,0.27436,"Late clades
 (Omicron+)"
-24A,3,0.88567,0.277157,"Late clades
+23D,2,0.906116,0.287456,"Late clades
 (Omicron+)"
-24A,2,0.772662,0.237706,"Late clades
+23D,0,0.731555,0.246847,"Late clades
 (Omicron+)"
-24A,5,1.11509,0.36838,"Late clades
+23D,3,0.955065,0.299643,"Late clades
+(Omicron+)"
+23D,5,1.14595,0.364983,"Late clades
+(Omicron+)"
+23F,4,1.02744,0.319307,"Late clades
+(Omicron+)"
+23F,2,0.872005,0.279081,"Late clades
+(Omicron+)"
+23F,1,0.848871,0.260146,"Late clades
+(Omicron+)"
+23F,0,0.728804,0.246503,"Late clades
+(Omicron+)"
+23F,3,0.955254,0.299005,"Late clades
+(Omicron+)"
+23F,5,1.20217,0.371474,"Late clades
+(Omicron+)"
+24A,4,0.996938,0.311731,"Late clades
+(Omicron+)"
+24A,3,0.943343,0.290138,"Late clades
+(Omicron+)"
+24A,2,0.901879,0.274211,"Late clades
+(Omicron+)"
+24A,1,0.794209,0.248344,"Late clades
+(Omicron+)"
+24A,0,0.709699,0.240803,"Late clades
+(Omicron+)"
+24A,5,1.25909,0.40435,"Late clades
 (Omicron+)"
