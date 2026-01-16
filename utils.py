@@ -228,6 +228,19 @@ def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_pat
     return exp_aa_subst, exp_aa_subst_matrix
 
 
+def prepare_exp_cdn_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None):
+    df_changes = collect_possible_changes(gc=gc)
+    spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
+
+    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
+    exp_cdn_subst = df_changes.groupby(['cdn1', 'cdn2'])['rate'].sum().reset_index()
+    
+    if save_path:
+        exp_cdn_subst.to_csv(save_path, float_format='%g', index=False)
+    exp_cdn_subst_matrix = exp_cdn_subst.pivot(index='cdn1', columns='cdn2', values='rate').fillna(0.)
+    return exp_cdn_subst, exp_cdn_subst_matrix
+
+
 def prepare_exp_aa_subst_codons(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None, codon_pos='all'): 
     df_changes = collect_possible_changes(gc=gc)
     spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
@@ -250,22 +263,6 @@ def prepare_exp_aa_subst_codons(spectrum: pd.DataFrame, rate_col='rate', gc=1, s
         exp_aa_subst.to_csv(save_path, float_format='%g', index=False)
     exp_aa_subst_matrix = exp_aa_subst.pivot(index='aa1', columns='aa2', values='rate').fillna(0.)
     return exp_aa_subst, exp_aa_subst_matrix
-
-
-def prepare_exp_cdn_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None):
-    df_changes = collect_possible_changes(gc=gc)
-    spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
-
-    df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
-
-    ## Calculate expected AA substitutions matrix
-    exp_cdn_subst = df_changes[(df_changes.cdn1 != '*')&(df_changes.cdn2 != '*')]\
-        .groupby(['cdn1', 'cdn2'])['rate'].sum().reset_index()
-    
-    if save_path:
-        exp_cdn_subst.to_csv(save_path, float_format='%g', index=False)
-    exp_cdn_subst_matrix = exp_cdn_subst.pivot(index='cdn1', columns='cdn2', values='rate').fillna(0.)
-    return exp_cdn_subst, exp_cdn_subst_matrix
 
 
 def prepare_rnd_exp_aa_subst(gc=1, tstv_ratio=None, save_path=None):
