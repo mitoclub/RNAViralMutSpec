@@ -1,5 +1,16 @@
 # RNA viruses amino acid substitutions analysis
 
+## Environment
+
+Create conda environment:
+
+```bash
+mamba env create -f environment.yml
+mamba activate amino-acid-shift
+pip install --no-deps pymutspec  # temporary solution until pymutspec is on conda-forge
+pip install ete3 pytest PyYAML click legacy-cgi
+```
+
 ## Structure
 
 1. [SARS-CoV-2 amino acid substitutions ananlysis](./1sars-cov-2/)
