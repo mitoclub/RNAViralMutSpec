@@ -12,6 +12,20 @@ from pymutspec.constants import possible_codons
 alphabet = 'ACGT'
 transitions = ['A>G', 'C>T', 'G>A', 'T>C']
 transversions = ['A>C', 'A>T', 'C>A', 'C>G', 'G>C', 'G>T', 'T>A', 'T>G']
+color_mapping12 = {
+    "C>A": "deepskyblue",
+    "G>T": "deepskyblue",
+    "C>G": "black",
+    "G>C": "black",
+    "C>T": "red",
+    "G>A": "red",
+    "T>A": "silver",
+    "A>T": "silver",
+    "T>C": "yellowgreen",
+    "A>G": "yellowgreen",
+    "T>G": "pink",
+    "A>C": "pink",
+}
 amino_acid_codes = {
     "A": "Ala",
     "R": "Arg",
