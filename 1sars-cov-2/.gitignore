@@ -1,5 +1,5 @@
 data/SARS2-orf1ab*
 data/aa_content_2025.csv
-data/aa_subst_total_rates.csv
+data/aa_subst_total_rates*.csv
 figures/*.svg
 *.gz
