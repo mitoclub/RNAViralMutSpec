@@ -226,6 +226,17 @@ def get_equilibrium_freqs_rnd(gc=1, tstv_ratio=2.0):
     return rnd_spectrum, res
 
 
+def __split_summed_sbs(sbs):
+    if len(sbs) == 3:
+        return sbs
+    new_sbs = ''
+    for i, c in enumerate(sbs):
+        if i>0 and i % 3 == 0:
+            new_sbs += '|'
+        new_sbs += c
+    return new_sbs
+
+
 def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_path=None):
     df_changes = collect_possible_changes(gc=gc)
     spectrum_dict = spectrum.set_index('Mut')[rate_col].to_dict()
@@ -233,8 +244,12 @@ def prepare_exp_aa_subst(spectrum: pd.DataFrame, rate_col='rate', gc=1, save_pat
     df_changes['rate'] = df_changes['sbs'].map(spectrum_dict)
 
     ## Calculate expected AA substitutions matrix
-    exp_aa_subst = df_changes[(df_changes.aa1 != '*')&(df_changes.aa2 != '*')]\
-        .groupby(['aa1', 'aa2'])['rate'].sum().reset_index()
+    # exp_aa_subst = df_changes[(df_changes.aa1 != '*')&(df_changes.aa2 != '*')]\
+    #     .groupby(['aa1', 'aa2'])['rate'].sum().reset_index()
+    exp_aa_subst = df_changes.query('aa1 != aa2 & aa1 != "*" & aa2 != "*"')\
+        .groupby(['aa1', 'aa2', 'sbs'])['rate'].sum().reset_index()\
+            .groupby(['aa1', 'aa2']).sum().reset_index()
+    exp_aa_subst['sbs'] = exp_aa_subst['sbs'].apply(__split_summed_sbs)
     
     if save_path:
         exp_aa_subst.to_csv(save_path, float_format='%g', index=False)
