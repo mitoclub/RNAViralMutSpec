@@ -6,8 +6,8 @@ Create conda environment:
 
 ```bash
 mamba env create -f environment.yml
-mamba activate amino-acid-shift
-pip install ete3 pytest PyYAML click legacy-cgi
+mamba activate shift
+pip install legacy-cgi
 pip install --no-deps pymutspec  # temporary solution until pymutspec is on conda-forge
 ```
 
