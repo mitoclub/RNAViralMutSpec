@@ -402,9 +402,9 @@ def calc_metrics(aa_subst: pd.DataFrame):
 
     # 4. RMSE
     try:
-        rmse = mean_squared_error(aa_subst.nobs_freqs, aa_subst.nexp_freqs) ** 0.5
+        rmse_log = mean_squared_error(np.log1p(aa_subst.nobs_freqs), np.log1p(aa_subst.nexp_freqs)) ** 0.5
     except:
-        rmse = np.nan
+        rmse_log = np.nan
 
     mask = y_true > 0
     mape = mean_absolute_percentage_error(y_true[mask], y_pred[mask])
@@ -413,6 +413,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
     # Spearman's rank correlation coefficient
     spearman_corr, spearman_p = spearmanr(y_true, y_pred)
     pearson_corr, pearson_p = pearsonr(y_true, y_pred)
+    pearson_corr_log, pearson_p_log = pearsonr(np.log1p(y_true), np.log1p(y_pred))
 
     # total number of ns mutations
     mut_count = np.sum(y_true)
@@ -420,6 +421,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
     slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
 
     r2 = r2_score(y_true, y_pred)
+    r2_log = r2_score(np.log1p(y_true), np.log1p(y_pred))
 
     corr_chem_vs_rel_freq = pearsonr(
         aa_subst.obs_relative_freq, 
@@ -428,6 +430,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
     
     metrics = {
         'r2': r2,
+        'r2_log': r2_log,
         'mape': mape,
         'wape': wape,
         'slope': slope,
@@ -437,9 +440,11 @@ def calc_metrics(aa_subst: pd.DataFrame):
         'pearson_corr': pearson_corr,
         'pearson_corr_squared': pearson_corr**2,
         'pearson_p': pearson_p,
+        'pearson_corr_log': pearson_corr_log,
+        'pearson_p_log': pearson_p_log,
         'ks_stat': ks_stat,
         'ks_p': ks_p,
-        'rmse': rmse,
+        'rmse_log': rmse_log,
         'log_likelihood': log_likelihood,
         'mut_count': mut_count,
         'mut_type_count': aa_subst.nobs.ne(0).sum(),
