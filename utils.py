@@ -325,6 +325,19 @@ def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_fr
     return aa_subst
 
 
+def transform_clr(v, func_log=np.log):
+    """
+    Centered log-ratio transformation for compositional data.
+    """
+    v = np.asarray(v)
+    if np.any(v <= 0) and func_log == np.log:
+        raise ValueError("All elements of input vector must be positive for CLR transformation.")
+    log_v = func_log(v)
+    mean_log_v = np.mean(log_v)
+    clr_v = log_v - mean_log_v
+    return clr_v
+
+
 def calc_accuracy(y_true, y_pred):
     '''
     LEGACY
@@ -389,62 +402,48 @@ def weighted_average_percentage_error(y_true, y_pred):
 
 
 def calc_metrics(aa_subst: pd.DataFrame):
-    aa_subst = aa_subst.dropna()
-    y_true = aa_subst.nobs_scaled
-    y_pred = aa_subst.nexp
+    aa_subst = aa_subst.dropna().query('rate_exp > 0')
+    nobs_clr = transform_clr(aa_subst['nobs_freqs'], np.log1p)
+    nexp_clr = transform_clr(aa_subst['nexp_freqs'], np.log1p)
 
-    # 2. Kolmogorov-Smirnov test
-    ks_stat, ks_p = ks_2samp(y_true, y_pred)
-
-    # 3. Log-Likelihood
-    log_likelihood = np.sum(aa_subst.nobs_freqs * np.log(aa_subst.nexp_freqs) + \
-                                (1 - aa_subst.nobs_freqs) * np.log(1 - aa_subst.nexp_freqs))
+    log_likelihood = np.sum(aa_subst['nobs_freqs'] * np.log(aa_subst['nexp_freqs']) + \
+                                (1 - aa_subst['nobs_freqs']) * np.log(1 - aa_subst['nexp_freqs']))
 
     # 4. RMSE
     try:
-        rmse_log = mean_squared_error(np.log1p(aa_subst.nobs_freqs), np.log1p(aa_subst.nexp_freqs)) ** 0.5
+        rmse_clr = mean_squared_error(nobs_clr, nexp_clr) ** 0.5
     except:
-        rmse_log = np.nan
+        rmse_clr = np.nan
 
-    mask = y_true > 0
-    mape = mean_absolute_percentage_error(y_true[mask], y_pred[mask])
-    wape = weighted_average_percentage_error(y_true[mask], y_pred[mask])
+    mask = aa_subst['nobs'] > 0
+    mape = mean_absolute_percentage_error(aa_subst['nobs_freqs'][mask], aa_subst['nexp_freqs'][mask])
+    wape = weighted_average_percentage_error(aa_subst['nobs_freqs'][mask], aa_subst['nexp_freqs'][mask])
 
     # Spearman's rank correlation coefficient
-    spearman_corr, spearman_p = spearmanr(y_true, y_pred)
-    pearson_corr, pearson_p = pearsonr(y_true, y_pred)
-    pearson_corr_log, pearson_p_log = pearsonr(np.log1p(y_true), np.log1p(y_pred))
+    spearman_corr, spearman_p = spearmanr(aa_subst['nobs_freqs'], aa_subst['nexp_freqs'])
+    pearson_corr_clr, pearson_p_clr = pearsonr(nobs_clr, nexp_clr)
 
     # total number of ns mutations
-    mut_count = np.sum(y_true)
+    mut_count = np.sum(aa_subst['nobs'])
 
-    slope, intercept = calc_slope(aa_subst.nobs_freqs, aa_subst.nexp_freqs)
-
-    r2 = r2_score(y_true, y_pred)
-    r2_log = r2_score(np.log1p(y_true), np.log1p(y_pred))
+    r2 = r2_score(aa_subst['nobs_freqs'], aa_subst['nexp_freqs'])
+    r2_clr = r2_score(nobs_clr, nexp_clr)
 
     corr_chem_vs_rel_freq = pearsonr(
-        aa_subst.obs_relative_freq, 
-        aa_subst.grantham_distance,
+        aa_subst['obs_relative_freq'], 
+        aa_subst['grantham_distance'],
     )
     
     metrics = {
         'r2': r2,
-        'r2_log': r2_log,
+        'r2_clr': r2_clr,
         'mape': mape,
         'wape': wape,
-        'slope': slope,
-        'intercept': intercept,
         'spearman_corr': spearman_corr,
         'spearman_p': spearman_p,
-        'pearson_corr': pearson_corr,
-        'pearson_corr_squared': pearson_corr**2,
-        'pearson_p': pearson_p,
-        'pearson_corr_log': pearson_corr_log,
-        'pearson_p_log': pearson_p_log,
-        'ks_stat': ks_stat,
-        'ks_p': ks_p,
-        'rmse_log': rmse_log,
+        'pearson_corr_clr': pearson_corr_clr,
+        'pearson_p_clr': pearson_p_clr,
+        'rmse_clr': rmse_clr,
         'log_likelihood': log_likelihood,
         'mut_count': mut_count,
         'mut_type_count': aa_subst.nobs.ne(0).sum(),
