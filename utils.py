@@ -9,6 +9,14 @@ from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error, 
 from pymutspec.annotation import CodonAnnotation
 from pymutspec.constants import possible_codons
 
+from ecoli_glm import (
+    fit_poisson,
+    fit_negative_binomial,
+    fit_zero_inflated_poisson,
+    fit_zero_inflated_nb,
+    predicted_response,
+)
+
 alphabet = 'ACGT'
 transitions = ['A>G', 'C>T', 'G>A', 'T>C']
 transversions = ['A>C', 'A>T', 'C>A', 'C>G', 'G>C', 'G>T', 'T>A', 'T>G']
@@ -309,12 +317,17 @@ def prepare_aa_subst(obs_df: pd.DataFrame, exp_aa_subst: pd.DataFrame, ref_aa_fr
                         (aa_subst['aa2'] != '*')]
     aa_subst['aa1'] = aa_subst['aa1'].map(amino_acid_codes)
     aa_subst['aa2'] = aa_subst['aa2'].map(amino_acid_codes)
+    
+    # add expected rates
+    aa_subst = aa_subst.merge(exp_aa_subst.rename(columns={'rate': 'rate_exp'}), 'right').fillna(0)
+    aa_subst = aa_subst[aa_subst['aa1'] != aa_subst['aa2']]
+
+    # scale observed counts by reference amino acid frequencies
     ref_aa_total_cnt = sum([x for x in ref_aa_freqs.values() if x > 0])
     aa_subst['ref_aa1_freq'] = aa_subst['aa1'].map(ref_aa_freqs) / ref_aa_total_cnt
     aa_subst['nobs_scaled'] = (aa_subst['nobs'] / aa_subst['ref_aa1_freq']).replace(np.inf, np.nan)
     aa_subst['nobs_scaled'] = aa_subst['nobs_scaled'] / aa_subst['nobs_scaled'].sum() * aa_subst['nobs'].sum()
-    aa_subst = aa_subst.merge(exp_aa_subst.rename(columns={'rate': 'rate_exp'}), 'right').fillna(0)
-    aa_subst = aa_subst[aa_subst['aa1'] != aa_subst['aa2']]
+
     aa_subst['nexp'] = aa_subst['rate_exp'] / aa_subst['rate_exp'].sum() * aa_subst['nobs_scaled'].sum()
     aa_subst['diff'] = aa_subst['nobs_scaled'] - aa_subst['nexp']
     aa_subst['pe'] = aa_subst['diff'] / aa_subst['nobs_scaled'] * 100  # %
@@ -401,6 +414,53 @@ def weighted_average_percentage_error(y_true, y_pred):
     return mean_absolute_percentage_error(y_true, y_pred, sample_weight=y_true)
 
 
+def fit_glm(aa_subst: pd.DataFrame):
+    # required columns: endog "events", predictor (exog) "log_mutAll", offset "log_frequency"
+    data = aa_subst[['aa1', 'aa2', 'sbs']]
+    data['events'] = aa_subst['nobs'].astype(int)
+    data['log_mutAll'] = np.log(aa_subst['rate_exp'])
+    data['log_frequency'] = np.log(aa_subst['ref_aa1_freq'])
+
+    poisson = fit_poisson(data)
+    nb = fit_negative_binomial(data, ["log_mutAll"], maxiter=50)
+
+    try:
+        zip_poisson = fit_zero_inflated_poisson(data)
+    except Exception as exc:
+        zip_poisson = None
+        print(f"Zero-inflated Poisson failed: {exc}")
+
+    try:
+        zinb = fit_zero_inflated_nb(data, ["log_mutAll"])
+    except Exception as exc:
+        zinb = None
+        print(f"Zero-inflated negative binomial failed: {exc}")
+
+    results = []
+    for model, name in zip([poisson, nb, zip_poisson, zinb], ['Poisson', 'Negative Binomial', 'Zero-inflated Poisson', 'Zero-inflated Negative Binomial']):
+        if model is not None:
+            predevents = predicted_response(model, data, ['log_mutAll'])
+            pearson_corr, pearson_p = pearsonr(data['events'], predevents)
+            spearman_corr, spearman_p = spearmanr(data['events'], predevents)
+            r2 = r2_score(data['events'], predevents)
+            metrics = {
+                "model": name,
+                "r2": r2,
+                "pearson_corr": pearson_corr,
+                "pearson_p": pearson_p,
+                "spearman_corr": spearman_corr,
+                "spearman_p": spearman_p,
+                "log_likelihood": model._results.llf,
+                "beta": model.params['log_mutAll'],
+                "beta_se": model.bse['log_mutAll'],
+            }
+            results.append(metrics)
+
+    predevents = predicted_response(nb, data, ['log_mutAll'])
+    data['predevents'] = predevents
+    return results, data
+
+
 def calc_metrics(aa_subst: pd.DataFrame):
     aa_subst = aa_subst.dropna().query('rate_exp > 0')
     nobs_clr = transform_clr(aa_subst['nobs_freqs'], np.log1p)
@@ -433,7 +493,7 @@ def calc_metrics(aa_subst: pd.DataFrame):
         aa_subst['obs_relative_freq'], 
         aa_subst['grantham_distance'],
     )
-    
+
     metrics = {
         'r2': r2,
         'r2_clr': r2_clr,
@@ -450,6 +510,11 @@ def calc_metrics(aa_subst: pd.DataFrame):
         'corr_chem_vs_rel_freq': corr_chem_vs_rel_freq.correlation,
         'corr_chem_vs_rel_freq_pval': corr_chem_vs_rel_freq.pvalue,
     }
+    res_glm, _ = fit_glm(aa_subst)
+    res_glm_nb = {'nb_'+k: v for k,v in res_glm[1].items()}
+    
+    metrics.update(res_glm_nb)
+
     return metrics
 
 
