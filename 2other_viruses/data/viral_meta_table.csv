@@ -1,0 +1,33 @@
+type,taxid,taxname,label,dataset,Species,Label,Family,Class,Sense,Fragment,Records in Genbank,comment,Host,Derived seq cnt,MSA len,Ts/Tv,#[syn],#[syn+nonsyn],nonsyn_mut_cnt,syn_mut_cnt
++ssRNA,11082,West Nile virus,WNV,nemu,Orthoflavivirus nilense,WNV,Flaviviridae,Flasuviricetes,,polyprotein,23308.0,,Culex pipiens,471.0,10302.0,7.34,2128.74,2597.43,468.694983,2128.7371860000003
++ssRNA,11983,Norwalk virus,norw,nemu,Norwalk virus,norw,Caliciviridae,Pisoniviricetes,ssRNA+,polyprotein,60009.0,,Canidae,101.0,5379.0,7.23,4630.55,4968.03,337.475278,4630.553624
++ssRNA,12092,Hepatovirus A,HAV,nemu,,,,,,,,,,,,,,,755.87261,7684.808573
++ssRNA,12110,Foot-and-mouth disease virus,FMDV,nemu,Foot-and-mouth disease virus,FMDV,Picornaviridae,Pisoniviricetes,,polyprotein,15462.0,,Bubalus,458.0,7000.0,7.47,7756.64,9806.5,2049.8569,7756.640326000001
++ssRNA,12162,Citrus tristeza virus,CTV,nemu,Citrus tristeza virus,CTV,Closteroviridae,Alsuviricetes,,polyprotein,7456.0,,Citrus reticulata,60.0,9410.0,3.44,2522.4,3786.07,1263.673546,2522.399633
++ssRNA,12637,Dengue virus,denv,nemu,Orthoflavivirus denguei,denv,Flaviviridae,Flasuviricetes,,polyprotein,50000.0,,Homo sapiens,493.0,10182.0,6.88,3810.87,4583.0,772.12843,3810.874084
++ssRNA,28295,Porcine epidemic diarrhea virus,PEDV,nemu,Porcine epidemic diarrhea virus,PEDV,Coronaviridae,Pisoniviricetes,,ORF1B,7926.0,,Suidae,353.0,7967.0,2.31,2879.16,3751.44,872.280018,2879.1631079999997
++ssRNA,28344,Porcine reproductive and respiratory syndrome virus,PRRSV,nemu,Betaarterivirus suid 2,PRRSV,Arteriviridae,Pisoniviricetes,,polyprotein,41373.0,,Suidae,199.0,7558.0,4.36,2494.89,4316.27,1821.380187,2494.885168
++ssRNA,54290,GB virus C,HGV,nemu,Pegivirus hominis,HGV,Flaviviridae,Flasuviricetes,,polyprotein,5187.0,OldTaxid:1985356,Homo sapiens,95.0,8551.0,1.47,36250.59,37864.15,1613.555171,36250.590662
++ssRNA,138948,Enterovirus A,evA,nemu,Enterovirus A,evA,Picornaviridae,Pisoniviricetes,,polyprotein,44425.0,,Homo sapiens,492.0,7318.0,9.17,20292.69,22285.36,1992.674655,20292.685878
++ssRNA,138950,Enterovirus C,evC,nemu,Enterovirus C,evC,Picornaviridae,Pisoniviricetes,,polyprotein,15075.0,,Homo sapiens,474.0,6624.0,3.74,23070.3,26029.84,2959.538345,23070.299355
++ssRNA,138951,Enterovirus D,evD,nemu,Enterovirus D,evD,Picornaviridae,Pisoniviricetes,,polyprotein,6313.0,,Homo sapiens,492.0,6567.0,10.78,10921.33,12536.94,1615.603371,10921.332136
++ssRNA,198112,Deformed wing virus,DWV,nemu,Iflavirus aladeformis,DWV,Iflaviridae,Pisoniviricetes,,polyprotein,5431.0,,Honey bee,207.0,8691.0,5.98,8686.33,9869.12,1182.785745,8686.333614
++ssRNA,693997,Alphacoronavirus 1,alCoV1,nemu,Alphacoronavirus 1,alCoV1,Coronaviridae,Pisoniviricetes,,S-protein,6193.0,,Canidae,105.0,4414.0,2.1,1695.73,2240.75,545.021064,1695.728935
++ssRNA,694014,Avian coronavirus,ACoV ,nemu,Avian coronavirus,ACoV,Coronaviridae,Pisoniviricetes,,polyprotein 1b,18179.0,,Gallus gallus,448.0,7983.0,1.8,26850.79,31831.84,4981.051003,26850.792314
++ssRNA,1678143,Orthohepevirus A,HEV,nemu,Paslahepevirus balayani,HEV,Hepeviridae,Alsuviricetes,,polyprotein,11182.0,,Homo sapiens,232.0,5190.0,5.29,47326.11,51134.34,3808.231418,47326.110028
++ssRNA,3052230,Hepacivirus hominis,HCV,nemu,,,,,,,,,,,,,,,5532.530384,24037.740199
+-ssRNA,11320,Influenza A virus,flu_a,nemu,Alphainfluenzavirus influenzae,flu_a,Orthomyxoviridae,Insthoviricetes,ssRNA-,segment 1 и 2,911904.0,<3000bp,Homo sapiens,446.0,2280.0,4.08,465.91,174.98,,
+-ssRNA,57482,European bat 1 lyssavirus,EBLV1,nemu,Lyssavirus hamburg,EBLV1,Rhabdoviridae,Monjiviricetes,,polymerase,645.0,,Eptesicus serotinus,152.0,6384.0,3.8,940.17,1045.89,105.723826,940.166635
+-ssRNA,118655,Oropouche orthobunyavirus,OROV,nemu,Orthobunyavirus oropoucheense,OROV,Peribunyaviridae,Ellioviricetes,,polymerase,2875.0,OldTaxid:1933309,Homo sapiens,472.0,6760.0,4.03,932.25,1157.69,225.442925,932.250477
+-ssRNA,162145,Human metapneumovirus,HMV,nemu,Metapneumovirus hominis,HMV,Pneumoviridae,Monjiviricetes,,polymerase,12076.0,,Homo sapiens,438.0,6019.0,6.33,5433.4,6253.64,820.232873,5433.404754
+-ssRNA,1133363,Schmallenberg orthobunyavirus,SBV,nemu,Orthobunyavirus schmallenbergense,SBV,Peribunyaviridae,Ellioviricetes,,М polyprotein,500.0,OldTaxid:2560743,Ovis aries,118.0,4221.0,6.12,294.06,1046.53,752.476677,294.055858
+-ssRNA,1933178,Akabane orthobunyavirus,aka,nemu,Orthobunyavirus akabaneense,aka,Peribunyaviridae,Ellioviricetes,,polymerase,720.0,,Ruminantia,67.0,6756.0,5.76,1572.02,1804.76,232.731865,1572.0244010000001
+-ssRNA,3052493,Puumala orthohantavirus,PUUV,nemu,Orthohantavirus puumalaense,PUUV,Hantaviridae,Ellioviricetes,,polymerase,3630.0,oldTaxid:1980486,Myodes glareolus,114.0,6471.0,3.21,5425.5,5691.09,265.59857,5425.495221
+-ssRNA,3052763,Rice stripe tenuivirus,RSV,nemu,Tenuivirus oryzaclavatae,RSV,Phenuiviridae,Ellioviricetes,,segment 1,802.0,OldTaxid:12331,Oryza sativa,38.0,8757.0,2.1,2344.79,2619.25,274.462122,2344.785943
+dsRNA,10407,Hepatitis B virus,HBV,nemu,Hepatitis B virus,HBV,Hepadnaviridae,Revtraviricetes,,polymerase,135019.0,partially ds,Homo sapiens,469.0,2496.0,1.47,3195.4,5579.3,2383.892893,3195.40395
+dsRNA,10990,Rice black streaked dwarf virus,RBSDV,nemu,Rice black streaked dwarf virus,RBSDV,Spinareoviridae,Resentoviricetes,,segment S1,1149.0,,Avena sativa,123.0,4395.0,3.1,1194.66,1433.02,238.358078,1194.659448
+dsRNA,38170,Avian orthoreovirus,aorv,nemu,Avian orthoreovirus,aorv,Spinareoviridae,Resentoviricetes,dsRNA,lambda A,4363.0,,Birds,199.0,4011.0,4.38,7773.6,8108.19,334.586951,7773.6043930000005
+dsRNA,40054,Epizootic hemorrhagic disease virus,EHDV,nemu,Epizootic hemorrhagic disease virus,EHDV,Sedoreoviridae,Resentoviricetes,,segment 1,1773.0,,Ruminantia,111.0,3906.0,8.62,1834.47,2133.6,299.130281,1834.473232
+dsRNA,77763,Banna virus,BAV,nemu,Seadornavirus bannaense,BAV,Sedoreoviridae,Resentoviricetes,,polymerase,506.0,,Vertebrata/Invertebrata,27.0,3594.0,2.91,1778.58,1984.66,206.08611,1778.578422
+dsRNA,351073,Mammalian orthoreovirus,MRV,nemu,Mammalian orthoreovirus,MRV,Spinareoviridae,Resentoviricetes,,lambda 3,2366.0,,Mammals,161.0,3968.0,4.38,6223.85,6679.14,455.292448,6223.848291
+dsRNA,1157337,Piscine orthoreovirus,PRV,nemu,Piscine orthoreovirus,PRV,Spinareoviridae,Resentoviricetes,,lambda 3,2478.0,,Fishes,79.0,4049.0,7.51,127.9,149.67,21.762999999999998,127.903582
