@@ -1,0 +1,54 @@
+graph TD
+  A[Raw inputs
+  df_annot_flt_en.csv
+  acc2taxid.csv
+  refseq FASTA/protein files
+  ms12syn_all_virus.csv
+  Bloom_etal JSON + rates_by_clade.csv] --> B[1.1get_viruses_linages.ipynb
+  species.csv
+  vir_linages.csv]
+
+  A --> C[1get_viral_spectra_dataset.ipynb
+  viral_spectra_dataset.csv]
+
+  A --> D[get_viruses_nucl_freq_aa_freq.ipynb
+  aminoacid_freq_all_virus.csv]
+
+  C --> E[get_viruses_nuc_and_aa_equilibrium_freq.ipynb
+  aa_equilibrium_freq.csv
+  legacy: aminoacid_eq_freq_all_virus.csv
+  legacy: nucl_eq_freq_all_virus.csv]
+
+  C --> F[2get_plot_ms12grouped_all_viruses.ipynb
+  mean_gr_eq_freq.csv
+  ms12grouped.pdf]
+
+  C --> G[prepare_table_of_vir_info.ipynb
+  viral_spectra_long.csv
+  viral_meta_table.csv
+  viral_taxid_info_be.csv]
+
+  C --> H[2spectra_eda_plus_eq_freq_be.ipynb
+  eq_freq_viral_groups_boxplot.csv]
+
+  C --> I[3pca.ipynb
+  PCA figures]
+
+  C --> J[3.1apply_random_model.py
+  virs_rnd_fit_metrics.csv
+  neutral_model_fit.pdf]
+
+  D --> K[get_plot_aa_observed_freq_vs_eq_freq.ipynb
+  amino-acid observed vs equilibrium plots]
+
+  E --> K
+  E --> L[4compare_aa_freqs_diff.ipynb
+  distance_to_eq.csv
+  comparison figures]
+
+  F --> L
+
+  G --> M[3.2model_fit_quality.ipynb
+  model-fit summaries and plots]
+  J --> M
+  L --> M
