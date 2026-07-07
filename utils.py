@@ -439,10 +439,14 @@ def fit_glm(aa_subst: pd.DataFrame):
     results = []
     for model, name in zip([poisson, nb, zip_poisson, zinb], ['Poisson', 'Negative Binomial', 'Zero-inflated Poisson', 'Zero-inflated Negative Binomial']):
         if model is not None:
-            predevents = predicted_response(model, data, ['log_mutAll'])
-            pearson_corr, pearson_p = pearsonr(data['events'], predevents)
-            spearman_corr, spearman_p = spearmanr(data['events'], predevents)
-            r2 = r2_score(data['events'], predevents)
+            try:
+                predevents = predicted_response(model, data, ['log_mutAll'])
+                pearson_corr, pearson_p = pearsonr(data['events'], predevents)
+                spearman_corr, spearman_p = spearmanr(data['events'], predevents)
+                r2 = r2_score(data['events'], predevents)
+            except Exception as exc:
+                print(f"Failed to calculate metrics for {name}: {exc}")
+                continue
             metrics = {
                 "model": name,
                 "r2": r2,
